@@ -29,6 +29,10 @@ for (int i=0;i<size;i++)
     cout<<p[i].first<<"---->"<<p[i].second<<endl;
 }
 sort(p.begin(),p.end(),mycompare);
+/*
+p.begin(): An iterator pointing to the first element of the vector p.
+p.end(): An iterator pointing one past the last element of the vector p.
+*/
 cout<<"Results : "<<endl;
 for (int i=0;i<size;i++)
 {
