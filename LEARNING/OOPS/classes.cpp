@@ -14,7 +14,7 @@ public:
         cout<<name<< " "<<age<<" "<< gpa<<endl;
     }
 };
-void print(Students s)
+void print(Students s)// this is pass by value so any kind of manupulation will not affect the original object but if you use void print(Studetnts& c) then it will be pass be reference
 {
 
     cout<<s.name<< " "<<s.age<<" "<< s.gpa<<endl;
