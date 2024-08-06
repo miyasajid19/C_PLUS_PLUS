@@ -86,6 +86,13 @@ public:
         arr = arr2;
     }
 
+    void Delete() {
+        delete[] arr; // free old memory
+        size = 0;
+        capacity = 1;
+        arr = new int[capacity];
+    }
+
     void print() {
         for (int i = 0; i < size; i++) {
             cout << arr[i] << " ";
@@ -95,10 +102,10 @@ public:
 };
 
 int main() {
-#ifndef ONLINE_JUDGE
+    #ifndef ONLINE_JUDGE
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
-#endif
+    #endif
 
     Vector vec;
 
@@ -137,6 +144,10 @@ int main() {
     vec.add(60);
     vec.add(70);
     vec.print(); // Expected: 60 70
+
+    // Test deleting all elements
+    vec.Delete();
+    vec.print(); // Expected: 
 
     return 0;
 }
