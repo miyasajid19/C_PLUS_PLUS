@@ -36,6 +36,15 @@ void change(Employee* emp)
     cout<<"enter name uid salary and phoneno. of employee"<<endl;
     cin>>emp->name>>emp->uid>>emp->salary>>emp->phoneno;
 }
+void change1(Employee& emp)
+{
+    string name;
+    float salary;
+    int uid;
+    long long phoneno;
+    cout<<"enter name uid salary and phoneno. of employee"<<endl;
+    cin>>emp.name>>emp.uid>>emp.salary>>emp.phoneno;
+}
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -44,8 +53,11 @@ int main()
 #endif
     Employee e("sajid miya",432,250000,9808748490);
     e.display();
-    Employee* ptr=&e;
+    Employee* ptr=&e;//pointer object
     change(ptr);
+    e.display();
+    // it can be change via this method too
+    change1(e);
     e.display();
     return EXIT_SUCCESS;
 }
