@@ -55,10 +55,10 @@ int main()
 #endif
     FunLoading c;
     c.sum(1, 2);
-    c.sum(432.1, 234.1);  // Now calls the double version
+    c.sum(432.1, 234.1); // Now calls the double version
     c.sum("Obito", "Uchiha");
     c.sum(1, 2, 3);
-    c.sum(432.1, 234.1, 123.432);  // Now calls the double version
+    c.sum(432.1, 234.1, 123.432); // Now calls the double version
     c.sum("Obito", "Uchiha", "Tobi");
     return EXIT_SUCCESS;
 }
