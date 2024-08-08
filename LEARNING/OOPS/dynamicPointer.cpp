@@ -81,7 +81,7 @@ int main()
     for (int i = 0; i < size; i++)
     {
         employee[i].display();
-    }
+    }   
     // via vector method
     vector<Employee> emps;
     string name;

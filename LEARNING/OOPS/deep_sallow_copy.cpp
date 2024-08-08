@@ -71,5 +71,11 @@ int main()
     s3.print();
     Change1(&s3);
     s3.print();
+
+    Students s4(s1);// this is soft copy
+    s4.print();
+    Change1(&s4);
+    s4.print();
+    s1.print();
     return EXIT_SUCCESS;
 }
