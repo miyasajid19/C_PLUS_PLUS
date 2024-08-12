@@ -1,10 +1,5 @@
-4
-3
-2
-5
-2
-21
-4
-2
-3
-2
+sajid
+pramisha
+pramisajid
+git checkout main
+git pull origin main
