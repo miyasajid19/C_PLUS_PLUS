@@ -143,25 +143,28 @@ public:
     }
     void display()
     {
-        Node* temp=head;
-        while(temp!=NULL)
+        Node *temp = head;
+        while (temp != NULL)
         {
-            cout<<temp->value<<"->";
-            temp=temp->Next;
+            cout << temp->value << "->";
+            temp = temp->Next;
         }
-        cout<<"NULL"<<endl;
+        cout << "NULL" << endl;
     }
 };
 
-void AlternateRemoval(Node* &head)
+void deleteDulpicates(Node *&head)
 {
-    Node* currentNode=head;
-    while(currentNode!=NULL and currentNode->Next!=NULL)
+    Node *current_node = head;
+    while (current_node)
     {
-        Node* temp=currentNode->Next;
-        currentNode->Next=currentNode->Next->Next;
-        free(temp);
-        currentNode=currentNode->Next;
+        while (current_node->Next and current_node->value == current_node->Next->value)
+        {
+            Node *temp = current_node->Next;
+            current_node->Next = current_node->Next->Next;
+            free(temp);
+        }
+        current_node = current_node->Next;
     }
 }
 int main()
@@ -170,29 +173,22 @@ int main()
     freopen("..input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-LinkedList l1;
-l1.insertAtHead(432);
-l1.display();
-l1.insertAtHead(1);
-l1.display();
-l1.insertAtHead(2);
-l1.display();
-l1.insertAtHead(3);
-l1.display();
-l1.insertAtTail(8);
-l1.display();
-l1.insertAtTail(7);
-l1.display();
-l1.insertAtTail(6);
-l1.display();
-<<<<<<< HEAD
-l1.insertAtTail(5);
-l1.display();
-=======
->>>>>>> lists
-l1.insert(407,3);
-l1.display();
-AlternateRemoval(l1.head);
-l1.display();
+    LinkedList l1;
+    l1.insertAtTail(1);
+    l1.display();
+    l1.insertAtTail(1);
+    l1.display();
+    l1.insertAtTail(2);
+    l1.display();
+    l1.insertAtTail(3);
+    l1.display();
+    l1.insertAtTail(3);
+    l1.display();
+    l1.insertAtTail(3);
+    l1.display();
+    l1.insertAtTail(4);
+    l1.display();
+    deleteDulpicates(l1.head);
+    l1.display();
     return EXIT_SUCCESS;
 }

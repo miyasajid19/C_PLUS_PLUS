@@ -1,3 +1,4 @@
-enter the upper bound
-4 3 2 1 
-1 2 3 4 
+sajid->NULL
+sajid->pramisha->NULL
+sajid->pramisha->pramisajid->NULL
+NULL<-pramisajid<-pramisha<-sajid

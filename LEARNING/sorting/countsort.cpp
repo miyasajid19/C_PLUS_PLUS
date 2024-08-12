@@ -41,8 +41,8 @@ void countsort(int arr[], int size)
 int main()
 {
 #ifndef JUDGE_ONLINE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    freopen("../input.txt", "r", stdin);
+    freopen("../output.txt", "w", stdout);
 #endif
     cout << "How many data do you have? " << endl;
     int size;
