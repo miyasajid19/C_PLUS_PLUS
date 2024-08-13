@@ -35,6 +35,6 @@ int main()
     cin >> targetsum;
     int count=check(arr, size, targetsum);
     cout << "Total possible pairs : " << count;
-
+delete[] arr;
     return 0;
 }
