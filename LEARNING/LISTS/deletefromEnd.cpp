@@ -96,5 +96,5 @@ int main()
     list1.deleteFromEnd(3);
     list1.display();
     return EXIT_SUCCESS;
-}
+
 // this program assumes that index is always less than or equal to total length
