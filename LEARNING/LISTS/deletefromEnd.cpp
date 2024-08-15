@@ -58,6 +58,13 @@ public:
         {
             pointer2 = pointer2->Next;
         }
+        if (!pointer2)
+        {
+            Node* temp=head;
+            head=head->Next;
+            delete[] temp;
+            return;
+        }
         while (pointer2->Next)
         {
             pointer2 = pointer2->Next;
@@ -82,7 +89,8 @@ int main()
     list1.add(4);
     list1.add(5);
     list1.display();
-    list1.deleteFromEnd(2);
+    list1.deleteFromEnd(5);
     list1.display();
     return EXIT_SUCCESS;
 }
+// this program assumes that index is always less than or equal to total length
