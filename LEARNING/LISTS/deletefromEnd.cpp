@@ -89,7 +89,11 @@ int main()
     list1.add(4);
     list1.add(5);
     list1.display();
-    list1.deleteFromEnd(5);
+    list1.deleteFromEnd(2);
+    list1.display();
+    list1.deleteFromEnd(2);
+    list1.display();
+    list1.deleteFromEnd(3);
     list1.display();
     return EXIT_SUCCESS;
 }
