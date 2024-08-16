@@ -45,7 +45,8 @@ public:
 
     void Top()
     {
-        if (!head)
+        // if (!head)
+        if (isFull())
         {
             cout << "The stack is empty; no top element to display." << endl;
             return;
@@ -55,7 +56,8 @@ public:
 
     void pop()
     {
-        if (!head)
+        // if (!head)
+        if (isEmpty())
         {
             cout << "Stack underflow: cannot pop from an empty stack." << endl;
             return;
