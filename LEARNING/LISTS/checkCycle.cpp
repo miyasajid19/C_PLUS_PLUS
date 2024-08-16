@@ -63,6 +63,7 @@ bool CheckCycle(Node* head)
         pointer2=pointer2->Next->Next;
         if(pointer1==pointer2)
         {
+            cout<<"cyclic at "<<pointer1->value<<endl;
             return true;
         }
     }
