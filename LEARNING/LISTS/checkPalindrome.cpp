@@ -51,14 +51,17 @@ bool checkPalindrome(Node *head)
 {
     Node *pointer1 = head;
     Node *pointer2 = head;
+    // traverse the linkedlist to get middle point
     while(pointer2 and pointer2->Next)
     {
         pointer1=pointer1->Next;
         pointer2=pointer2->Next->Next;
     }
+    //breaking the  linkedlist from the middle
     Node* currentPointer=pointer1->Next;
     Node* previousPointer=pointer1;
     pointer1->Next=nullptr;
+    //reversing the second half of the linked list
     while(currentPointer)
     {
         Node* nextNode=currentPointer->Next;
@@ -66,6 +69,7 @@ bool checkPalindrome(Node *head)
         previousPointer=currentPointer;
         currentPointer=nextNode;
     }
+    // check for the palindrome
     Node* head1=head;
     Node* head2=previousPointer;
     while ((head2))
