@@ -10,7 +10,7 @@ public:
     Node(int value) : value(value), Next(nullptr) {}
 };
 
-class LinkedLists
+class Stacks
 {
     Node *head;
     int size;
@@ -119,7 +119,7 @@ class LinkedLists
     }
 
 public:
-    LinkedLists(int capacity) : head(nullptr), size(0), capacity(capacity) {}
+    Stacks(int capacity) : head(nullptr), size(0), capacity(capacity) {}
 
     bool isEmpty() const
     {
@@ -149,7 +149,7 @@ public:
         if (isEmpty())
         {
             cout << "stack underflow" << endl;
-            cout << "linked list is empty !!! ::: there is nothing to delete" << endl;
+            cout << "linked stack is empty !!! ::: there is nothing to delete" << endl;
             return;
         }
         size--;
@@ -198,9 +198,9 @@ public:
         }
         return counter;
     }
-    void copyList(const LinkedLists &other)
+    void copystack(const Stacks &other)
     {
-        // Clear current list
+        // Clear current stack
         while (!isEmpty())
         {
             Pop();
@@ -226,18 +226,18 @@ public:
         capacity = other.capacity;
     }
 
-    LinkedLists Copy() const
+    Stacks Copy() const
     {
-        LinkedLists copiedList(capacity);
+        Stacks copiedstack(capacity);
         Node *current = head;
         Node *previous = nullptr;
 
         while (current)
         {
             Node *newNode = new Node(current->value);
-            if (!copiedList.head)
+            if (!copiedstack.head)
             {
-                copiedList.head = newNode;
+                copiedstack.head = newNode;
             }
             else
             {
@@ -246,8 +246,8 @@ public:
             previous = newNode;
             current = current->Next;
         }
-        copiedList.size = size;
-        return copiedList;
+        copiedstack.size = size;
+        return copiedstack;
     }
     void erase()
     {
@@ -299,47 +299,47 @@ int main()
     freopen("../output.txt", "w", stdout);
 #endif
 
-    // Create a linked list with a capacity of 5
-    LinkedLists list(5);
+    // Create a linked stack with a capacity of 5
+    Stacks stack(5);
 
-    // Display the initial state of the list (should be empty)
-    cout << "Initial list state (should be empty):" << endl;
-    list.display();
+    // Display the initial state of the stack (should be empty)
+    cout << "Initial stack state (should be empty):" << endl;
+    stack.display();
 
-    // Push elements to the list
-    cout << "\nPushing elements 1, 2, and 3 to the list:" << endl;
-    list.Push(1);
-    list.Push(2);
-    list.Push(3);
-    list.display();
+    // Push elements to the stack
+    cout << "\nPushing elements 1, 2, and 3 to the stack:" << endl;
+    stack.Push(1);
+    stack.Push(2);
+    stack.Push(3);
+    stack.display();
 
     // Show the top element after pushes
-    cout << "Top element after pushes: " << list.getTop() << endl;
+    cout << "Top element after pushes: " << stack.getTop() << endl;
 
     // Pop the top element
     cout << "\nPopping the top element:" << endl;
-    list.Pop();
-    list.display();
+    stack.Pop();
+    stack.display();
 
-    // Copy the list to another list
-    cout << "\nCopying the current list to another list:" << endl;
-    LinkedLists copiedList(list.Size());
-    copiedList.copyList(list);
-    copiedList.display();
+    // Copy the stack to another stack
+    cout << "\nCopying the current stack to another stack:" << endl;
+    Stacks copiedstack(stack.Size());
+    copiedstack.copystack(stack);
+    copiedstack.display();
 
-    // Reverse the copied list
-    cout << "\nReversing the copied list:" << endl;
-    copiedList.ReverseByRecursion();
-    copiedList.display();
+    // Reverse the copied stack
+    cout << "\nReversing the copied stack:" << endl;
+    copiedstack.ReverseByRecursion();
+    copiedstack.display();
 
-    // Erase the contents of the original list
-    cout << "\nErasing the original list:" << endl;
-    list.erase();
-    list.display();
+    // Erase the contents of the original stack
+    cout << "\nErasing the original stack:" << endl;
+    stack.erase();
+    stack.display();
 
-    // Display the size of the lists
-    cout << "\nSize of the original list after erasing: " << list.Size() << endl;
-    cout << "Size of the copied list: " << copiedList.Size() << endl;
+    // Display the size of the stacks
+    cout << "\nSize of the original stack after erasing: " << stack.Size() << endl;
+    cout << "Size of the copied stack: " << copiedstack.Size() << endl;
 
     return EXIT_SUCCESS;
 }
