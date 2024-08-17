@@ -89,6 +89,23 @@ vector<int> nextGreaterElement(int arr[], int length)
     }
     return result;
 }
+vector<int> nextSmallerElement(int arr[], int length)
+{
+    vector<int> result(length, -1);
+    Stacks stack(length);
+
+    for (int i = 0; i < length; i++)
+    {
+        while (!stack.isEmpty() && arr[i] <arr[stack.Top()])
+        {
+            int current = stack.Top();
+            result[current] = arr[i]; // Store the next greater element
+            stack.Pop();
+        }
+        stack.Push(i);
+    }
+    return result;
+}
 
 int main()
 {
@@ -127,6 +144,14 @@ int main()
     for (int i = 0; i < size; i++)
     {
         cout << result[i] << " ";
+    }
+    cout << endl;
+    cout << "Next Smaller Element ::::" << endl;
+    vector<int> resultant = nextSmallerElement(arr, size);
+
+    for (int i = 0; i < size; i++)
+    {
+        cout << resultant[i] << " ";
     }
     cout << endl;
 
