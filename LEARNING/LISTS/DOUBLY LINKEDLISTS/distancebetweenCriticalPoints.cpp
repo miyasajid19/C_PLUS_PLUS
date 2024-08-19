@@ -190,10 +190,9 @@ public:
     {
         if (!head)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from head to tail: ";
         Node *temp = head;
         while (temp)
         {
@@ -207,10 +206,9 @@ public:
     {
         if (!tail)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from tail to head: ";
         Node *temp = tail;
         while (temp)
         {
@@ -232,121 +230,113 @@ public:
         head = nullptr;
         tail = nullptr;
     }
-
-    void reverse()
+    bool isCriticalPoint(Node *&currentNode)
     {
-        Node *current = head;
-        Node *temp = nullptr;
-
-        while (current)
+        if (currentNode->Previous->value < currentNode->value and currentNode->Next->value < currentNode->value)
         {
-            temp = current->Previous;
-            current->Previous = current->Next;
-            current->Next = temp;
-            current = current->Previous;
+            return true;
         }
-
-        if (temp)
+        if (currentNode->Previous->value > currentNode->value and currentNode->Next->value > currentNode->value)
         {
-            temp = temp->Previous;
-            head = temp;
-            if (head)
+            return true;
+        }
+        return false;
+    }
+    vector<int> distanceBetweenCriticalPoints()
+    {
+        vector<int> ans(2, INT_MAX);
+        int firstCP = -1, lastCP = -1;
+        Node *currentPointer = tail->Previous;
+        if (not currentPointer)
+        {
+            ans[0] = ans[1] = -1;
+            return ans;
+        }
+        int currentPosition = 0;
+        while (currentPointer->Previous)
+        {
+            if (isCriticalPoint(currentPointer))
             {
-                tail = head;
-                while (tail->Next)
+                if (firstCP == -1)
                 {
-                    tail = tail->Next;
+                    firstCP = lastCP = currentPosition;
+                }
+                else
+                {
+                    ans[0] = min(ans[0], currentPosition - lastCP);
+                    ans[1] = currentPosition - firstCP;
+                    lastCP = currentPosition;
                 }
             }
+            currentPosition++;
+            currentPointer = currentPointer->Previous;
         }
-    }
-
-    bool isPalindrome()
-    {
-        if (!head)
+        if (ans[0] == INT_MAX)
         {
-            return false;
+            ans[0] = ans[1] = -1;
         }
-
-        Node *front = head;
-        Node *back = tail;
-
-        while (front != back && front->Previous != back)
-        {
-            if (front->value != back->value)
-            {
-                return false;
-            }
-            front = front->Next;
-            back = back->Previous;
-        }
-
-        return true;
+        return ans;
     }
 };
-
 int main()
 {
 #ifndef ONLINE_JUDGE
     freopen("../../input.txt", "r", stdin);
     freopen("../../output.txt", "w", stdout);
 #endif
-    cout << "Starting the doubly linked list operations..." << endl;
-
     DoublyLinkedList DoubleLL;
 
-    cout << "\nInserting values at the start of the list:" << endl;
-    for (int i = 1; i < 5; i++)
+    cout << "Inserting values into the doubly linked list: 1, 5, 4, 2, 6, 3" << endl;
+    DoubleLL.insertAtEnd(1);
+    DoubleLL.insertAtEnd(5);
+    DoubleLL.insertAtEnd(4);
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(6);
+    DoubleLL.insertAtEnd(3);
+
+    cout << "Displaying the current list from head to tail:" << endl;
+    DoubleLL.displayFromHead();
+
+    cout << "Calculating the distances between critical points in the list:" << endl;
+    vector<int> ans = DoubleLL.distanceBetweenCriticalPoints();
+    if (ans[0] == -1)
     {
-        cout << "Inserting " << i << " at the start." << endl;
-        DoubleLL.insertAtStart(i);
-        DoubleLL.displayFromHead();
+        cout << "No critical points found or not enough critical points to calculate distances." << endl;
+    }
+    else
+    {
+        cout << "Minimum distance between critical points: " << ans[0] << endl;
+        cout << "Maximum distance between critical points: " << ans[1] << endl;
     }
 
-    cout << "\nInserting values at the end of the list:" << endl;
-    for (int i = 5; i < 8; i++)
+    cout << "\nErasing the list to insert a new set of values." << endl;
+    DoubleLL.Erase();
+
+    cout << "Inserting values into the doubly linked list: 1, 2, 3, 4, 5" << endl;
+    DoubleLL.insertAtEnd(1);
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(3);
+    DoubleLL.insertAtEnd(4);
+    DoubleLL.insertAtEnd(5);
+
+    cout << "Displaying the current list from head to tail:" << endl;
+    DoubleLL.displayFromHead();
+
+    cout << "Calculating the distances between critical points in the list:" << endl;
+    ans = DoubleLL.distanceBetweenCriticalPoints();
+    if (ans[0] == -1)
     {
-        cout << "Inserting " << i << " at the end." << endl;
-        DoubleLL.insertAtEnd(i);
-        DoubleLL.displayFromHead();
+        cout << "No critical points found or not enough critical points to calculate distances." << endl;
+    }
+    else
+    {
+        cout << "Minimum distance between critical points: " << ans[0] << endl;
+        cout << "Maximum distance between critical points: " << ans[1] << endl;
     }
 
-    cout << "\nInserting 432 at index 2." << endl;
-    DoubleLL.insertAtIndex(432, 2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the first element from the list." << endl;
-    DoubleLL.removeFromStart();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element from the list." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element again." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 2." << endl;
-    DoubleLL.deleteAtIndex(2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 3." << endl;
-    DoubleLL.deleteAtIndex(3);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 1." << endl;
-    DoubleLL.deleteAtIndex(1);
-    DoubleLL.displayFromHead();
-
-    cout << "\nFinal operations to empty the list:" << endl;
-    while (DoubleLL.head != nullptr)
-    {
-        DoubleLL.removeFromEnd();
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nDoubly linked list operations completed." << endl;
+    cout << "\nErasing the list to complete the program." << endl;
+    DoubleLL.Erase();
 
     return EXIT_SUCCESS;
 }
+

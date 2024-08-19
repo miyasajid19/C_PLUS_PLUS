@@ -190,10 +190,9 @@ public:
     {
         if (!head)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from head to tail: ";
         Node *temp = head;
         while (temp)
         {
@@ -207,10 +206,9 @@ public:
     {
         if (!tail)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from tail to head: ";
         Node *temp = tail;
         while (temp)
         {
@@ -232,56 +230,20 @@ public:
         head = nullptr;
         tail = nullptr;
     }
-
-    void reverse()
+    void removeSameNeighbour()
     {
-        Node *current = head;
-        Node *temp = nullptr;
-
-        while (current)
+        Node *currentPointer = tail->Previous;
+        while (currentPointer != head)
         {
-            temp = current->Previous;
-            current->Previous = current->Next;
-            current->Next = temp;
-            current = current->Previous;
-        }
-
-        if (temp)
-        {
-            temp = temp->Previous;
-            head = temp;
-            if (head)
+            Node *previousPointer = currentPointer->Previous;
+            Node *nextPointer = currentPointer->Next;
+            if (previousPointer->value == nextPointer->value)
             {
-                tail = head;
-                while (tail->Next)
-                {
-                    tail = tail->Next;
-                }
+                previousPointer->Next = currentPointer->Next;
+                nextPointer->Previous = currentPointer->Previous;
             }
+            currentPointer = previousPointer;
         }
-    }
-
-    bool isPalindrome()
-    {
-        if (!head)
-        {
-            return false;
-        }
-
-        Node *front = head;
-        Node *back = tail;
-
-        while (front != back && front->Previous != back)
-        {
-            if (front->value != back->value)
-            {
-                return false;
-            }
-            front = front->Next;
-            back = back->Previous;
-        }
-
-        return true;
     }
 };
 
@@ -291,62 +253,32 @@ int main()
     freopen("../../input.txt", "r", stdin);
     freopen("../../output.txt", "w", stdout);
 #endif
-    cout << "Starting the doubly linked list operations..." << endl;
 
     DoublyLinkedList DoubleLL;
 
-    cout << "\nInserting values at the start of the list:" << endl;
-    for (int i = 1; i < 5; i++)
-    {
-        cout << "Inserting " << i << " at the start." << endl;
-        DoubleLL.insertAtStart(i);
-        DoubleLL.displayFromHead();
-    }
+    // Insert elements at the end of the doubly linked list
+    cout << "Inserting elements at the end of the doubly linked list: 2, 1, 1, 2, 1" << endl;
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(1);
+    DoubleLL.insertAtEnd(1);
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(1);
 
-    cout << "\nInserting values at the end of the list:" << endl;
-    for (int i = 5; i < 8; i++)
-    {
-        cout << "Inserting " << i << " at the end." << endl;
-        DoubleLL.insertAtEnd(i);
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nInserting 432 at index 2." << endl;
-    DoubleLL.insertAtIndex(432, 2);
+    // Display the list from head to tail
+    cout << "The current list from head to tail is: ";
     DoubleLL.displayFromHead();
 
-    cout << "\nRemoving the first element from the list." << endl;
-    DoubleLL.removeFromStart();
+    // Remove nodes with the same neighboring values
+    cout << "Removing nodes where neighbors have the same value..." << endl;
+    DoubleLL.removeSameNeighbour();
+
+    // Display the updated list from head to tail
+    cout << "The updated list after removing nodes with the same neighboring values is: ";
     DoubleLL.displayFromHead();
 
-    cout << "\nRemoving the last element from the list." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element again." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 2." << endl;
-    DoubleLL.deleteAtIndex(2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 3." << endl;
-    DoubleLL.deleteAtIndex(3);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 1." << endl;
-    DoubleLL.deleteAtIndex(1);
-    DoubleLL.displayFromHead();
-
-    cout << "\nFinal operations to empty the list:" << endl;
-    while (DoubleLL.head != nullptr)
-    {
-        DoubleLL.removeFromEnd();
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nDoubly linked list operations completed." << endl;
+    // Erase the list and free memory
+    cout << "Erasing the list and freeing memory." << endl;
+    DoubleLL.Erase();
 
     return EXIT_SUCCESS;
 }

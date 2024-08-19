@@ -190,10 +190,9 @@ public:
     {
         if (!head)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from head to tail: ";
         Node *temp = head;
         while (temp)
         {
@@ -207,10 +206,9 @@ public:
     {
         if (!tail)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from tail to head: ";
         Node *temp = tail;
         while (temp)
         {
@@ -232,36 +230,7 @@ public:
         head = nullptr;
         tail = nullptr;
     }
-
-    void reverse()
-    {
-        Node *current = head;
-        Node *temp = nullptr;
-
-        while (current)
-        {
-            temp = current->Previous;
-            current->Previous = current->Next;
-            current->Next = temp;
-            current = current->Previous;
-        }
-
-        if (temp)
-        {
-            temp = temp->Previous;
-            head = temp;
-            if (head)
-            {
-                tail = head;
-                while (tail->Next)
-                {
-                    tail = tail->Next;
-                }
-            }
-        }
-    }
-
-    bool isPalindrome()
+        bool isPalindrome()
     {
         if (!head)
         {
@@ -291,62 +260,61 @@ int main()
     freopen("../../input.txt", "r", stdin);
     freopen("../../output.txt", "w", stdout);
 #endif
-    cout << "Starting the doubly linked list operations..." << endl;
 
     DoublyLinkedList DoubleLL;
 
-    cout << "\nInserting values at the start of the list:" << endl;
-    for (int i = 1; i < 5; i++)
+    // Initially display the empty list
+    cout << "Initially, the doubly linked list is empty: ";
+    DoubleLL.displayFromHead();
+
+    // Insert elements at the end of the list
+    cout << "Inserting elements at the end of the doubly linked list: 1, 2, 3, 3, 2, 1" << endl;
+    DoubleLL.insertAtEnd(1);
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(3);
+    DoubleLL.insertAtEnd(3);
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(1);
+
+    // Display the list after insertion
+    cout << "The list from head to tail after insertion is: ";
+    DoubleLL.displayFromHead();
+
+    // Check if the list is a palindrome
+    cout << "Checking if the list is a palindrome..." << endl;
+    bool result = DoubleLL.isPalindrome();
+    if (result)
     {
-        cout << "Inserting " << i << " at the start." << endl;
-        DoubleLL.insertAtStart(i);
-        DoubleLL.displayFromHead();
+        cout << "The list is a palindrome." << endl;
+    }
+    else
+    {
+        cout << "The list is not a palindrome." << endl;
     }
 
-    cout << "\nInserting values at the end of the list:" << endl;
-    for (int i = 5; i < 8; i++)
+    // Insert another element to change the list
+    cout << "Inserting another element (6) at the end of the list." << endl;
+    DoubleLL.insertAtEnd(6);
+
+    // Display the list after adding another element
+    cout << "The list from head to tail after adding 6 is: ";
+    DoubleLL.displayFromHead();
+
+    // Check again if the updated list is a palindrome
+    cout << "Checking again if the list is a palindrome..." << endl;
+    result = DoubleLL.isPalindrome();
+    if (result)
     {
-        cout << "Inserting " << i << " at the end." << endl;
-        DoubleLL.insertAtEnd(i);
-        DoubleLL.displayFromHead();
+        cout << "The updated list is a palindrome." << endl;
+    }
+    else
+    {
+        cout << "The updated list is not a palindrome." << endl;
     }
 
-    cout << "\nInserting 432 at index 2." << endl;
-    DoubleLL.insertAtIndex(432, 2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the first element from the list." << endl;
-    DoubleLL.removeFromStart();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element from the list." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element again." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 2." << endl;
-    DoubleLL.deleteAtIndex(2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 3." << endl;
-    DoubleLL.deleteAtIndex(3);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 1." << endl;
-    DoubleLL.deleteAtIndex(1);
-    DoubleLL.displayFromHead();
-
-    cout << "\nFinal operations to empty the list:" << endl;
-    while (DoubleLL.head != nullptr)
-    {
-        DoubleLL.removeFromEnd();
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nDoubly linked list operations completed." << endl;
+    // Erase the list and free memory
+    cout << "Erasing the list and freeing memory." << endl;
+    DoubleLL.Erase();
 
     return EXIT_SUCCESS;
 }

@@ -190,10 +190,9 @@ public:
     {
         if (!head)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from head to tail: ";
         Node *temp = head;
         while (temp)
         {
@@ -207,10 +206,9 @@ public:
     {
         if (!tail)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from tail to head: ";
         Node *temp = tail;
         while (temp)
         {
@@ -218,19 +216,6 @@ public:
             temp = temp->Previous;
         }
         cout << endl;
-    }
-
-    void Erase()
-    {
-        Node *current = head;
-        while (current)
-        {
-            Node *nextNode = current->Next;
-            delete current;
-            current = nextNode;
-        }
-        head = nullptr;
-        tail = nullptr;
     }
 
     void reverse()
@@ -261,92 +246,48 @@ public:
         }
     }
 
-    bool isPalindrome()
+    void Erase()
     {
-        if (!head)
+        Node *current = head;
+        while (current)
         {
-            return false;
+            Node *nextNode = current->Next;
+            delete current;
+            current = nextNode;
         }
-
-        Node *front = head;
-        Node *back = tail;
-
-        while (front != back && front->Previous != back)
-        {
-            if (front->value != back->value)
-            {
-                return false;
-            }
-            front = front->Next;
-            back = back->Previous;
-        }
-
-        return true;
+        head = nullptr;
+        tail = nullptr;
     }
 };
-
 int main()
 {
 #ifndef ONLINE_JUDGE
     freopen("../../input.txt", "r", stdin);
     freopen("../../output.txt", "w", stdout);
 #endif
-    cout << "Starting the doubly linked list operations..." << endl;
 
     DoublyLinkedList DoubleLL;
 
-    cout << "\nInserting values at the start of the list:" << endl;
-    for (int i = 1; i < 5; i++)
+    cout << "Inserting elements at the end of the list:" << endl;
+    for (int i = 0; i < 5; i++)
     {
-        cout << "Inserting " << i << " at the start." << endl;
-        DoubleLL.insertAtStart(i);
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nInserting values at the end of the list:" << endl;
-    for (int i = 5; i < 8; i++)
-    {
-        cout << "Inserting " << i << " at the end." << endl;
         DoubleLL.insertAtEnd(i);
-        DoubleLL.displayFromHead();
+        cout << "Inserted " << i << " at the end of the list." << endl;
     }
 
-    cout << "\nInserting 432 at index 2." << endl;
-    DoubleLL.insertAtIndex(432, 2);
+    cout << "\nDisplaying the list from head to tail:" << endl;
     DoubleLL.displayFromHead();
 
-    cout << "\nRemoving the first element from the list." << endl;
-    DoubleLL.removeFromStart();
+    cout << "\nReversing the list:" << endl;
+    DoubleLL.reverse();
+
+    cout << "Displaying the list after reversal from head to tail:" << endl;
     DoubleLL.displayFromHead();
 
-    cout << "\nRemoving the last element from the list." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
+    cout << "\nErasing the entire list:" << endl;
+    DoubleLL.Erase();
 
-    cout << "\nRemoving the last element again." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 2." << endl;
-    DoubleLL.deleteAtIndex(2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 3." << endl;
-    DoubleLL.deleteAtIndex(3);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 1." << endl;
-    DoubleLL.deleteAtIndex(1);
-    DoubleLL.displayFromHead();
-
-    cout << "\nFinal operations to empty the list:" << endl;
-    while (DoubleLL.head != nullptr)
-    {
-        DoubleLL.removeFromEnd();
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nDoubly linked list operations completed." << endl;
+    cout << "List has been erased." << endl;
 
     return EXIT_SUCCESS;
 }

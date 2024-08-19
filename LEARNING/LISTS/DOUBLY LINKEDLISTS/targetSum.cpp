@@ -190,10 +190,9 @@ public:
     {
         if (!head)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from head to tail: ";
         Node *temp = head;
         while (temp)
         {
@@ -207,10 +206,9 @@ public:
     {
         if (!tail)
         {
-            cout << "The list is empty. Nothing to display." << endl;
+            cout << "There is nothing to display." << endl;
             return;
         }
-        cout << "List from tail to head: ";
         Node *temp = tail;
         while (temp)
         {
@@ -232,56 +230,46 @@ public:
         head = nullptr;
         tail = nullptr;
     }
-
-    void reverse()
+    void removeSameNeighbour()
     {
-        Node *current = head;
-        Node *temp = nullptr;
-
-        while (current)
+        Node *currentPointer = tail->Previous;
+        while (currentPointer != head)
         {
-            temp = current->Previous;
-            current->Previous = current->Next;
-            current->Next = temp;
-            current = current->Previous;
-        }
-
-        if (temp)
-        {
-            temp = temp->Previous;
-            head = temp;
-            if (head)
+            Node *previousPointer = currentPointer->Previous;
+            Node *nextPointer = currentPointer->Next;
+            if (previousPointer->value == nextPointer->value)
             {
-                tail = head;
-                while (tail->Next)
-                {
-                    tail = tail->Next;
-                }
+                previousPointer->Next = currentPointer->Next;
+                nextPointer->Previous = currentPointer->Previous;
             }
+            currentPointer = previousPointer;
         }
     }
 
-    bool isPalindrome()
+    vector<int> TargetSum(int sum)
     {
-        if (!head)
-        {
-            return false;
-        }
-
+        vector<int> ans(2, -1);
         Node *front = head;
         Node *back = tail;
-
-        while (front != back && front->Previous != back)
+        while (front != tail and front->Next != tail)
         {
-            if (front->value != back->value)
+            int mysum = front->value + tail->value;
+            if (mysum == sum)
             {
-                return false;
+                ans[0] = head->value;
+                ans[1] = tail->value;
+                return ans;
             }
-            front = front->Next;
-            back = back->Previous;
+            if (mysum > sum)
+            {
+                back = back->Previous;
+            }
+            else
+            {
+                front = front->Next;
+            }
         }
-
-        return true;
+        return ans;
     }
 };
 
@@ -291,62 +279,15 @@ int main()
     freopen("../../input.txt", "r", stdin);
     freopen("../../output.txt", "w", stdout);
 #endif
-    cout << "Starting the doubly linked list operations..." << endl;
-
     DoublyLinkedList DoubleLL;
-
-    cout << "\nInserting values at the start of the list:" << endl;
-    for (int i = 1; i < 5; i++)
-    {
-        cout << "Inserting " << i << " at the start." << endl;
-        DoubleLL.insertAtStart(i);
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nInserting values at the end of the list:" << endl;
-    for (int i = 5; i < 8; i++)
-    {
-        cout << "Inserting " << i << " at the end." << endl;
-        DoubleLL.insertAtEnd(i);
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nInserting 432 at index 2." << endl;
-    DoubleLL.insertAtIndex(432, 2);
+    DoubleLL.insertAtEnd(1);
+    DoubleLL.insertAtEnd(2);
+    DoubleLL.insertAtEnd(3);
+    DoubleLL.insertAtEnd(4);
+    DoubleLL.insertAtEnd(5);
     DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the first element from the list." << endl;
-    DoubleLL.removeFromStart();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element from the list." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nRemoving the last element again." << endl;
-    DoubleLL.removeFromEnd();
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 2." << endl;
-    DoubleLL.deleteAtIndex(2);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 3." << endl;
-    DoubleLL.deleteAtIndex(3);
-    DoubleLL.displayFromHead();
-
-    cout << "\nDeleting the element at index 1." << endl;
-    DoubleLL.deleteAtIndex(1);
-    DoubleLL.displayFromHead();
-
-    cout << "\nFinal operations to empty the list:" << endl;
-    while (DoubleLL.head != nullptr)
-    {
-        DoubleLL.removeFromEnd();
-        DoubleLL.displayFromHead();
-    }
-
-    cout << "\nDoubly linked list operations completed." << endl;
-
+    vector<int>ans = DoubleLL.TargetSum(7);
+    cout << ans[0] << " " << ans[1] << endl;
     return EXIT_SUCCESS;
 }
+// assume that the given linked list is non- decreasing strictly
