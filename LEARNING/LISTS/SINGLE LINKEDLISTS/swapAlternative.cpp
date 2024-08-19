@@ -79,7 +79,7 @@ public:
     }
 };
 
-Node *swapAlternate(Node* head)
+Node *swapAlternate(Node *head)
 {
     if (not head or not head->Next)
     {
@@ -87,7 +87,7 @@ Node *swapAlternate(Node* head)
     }
     Node *secondNode = head->Next;
     head->Next = swapAlternate(secondNode->Next);
-    secondNode->Next=head;
+    secondNode->Next = head;
     return secondNode;
 }
 int main()
@@ -103,7 +103,7 @@ int main()
     {
         list.push(i);
     }
-list.head=swapAlternate(list.head);
+    list.head = swapAlternate(list.head);
     list.display();
 
     return EXIT_SUCCESS;
