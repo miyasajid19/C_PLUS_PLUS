@@ -57,6 +57,44 @@ public:
         head = new_node; // Update the head to the new node
     }
 
+    void insertAtIndex(int value, int index)
+    {
+        if (!head)
+        {
+            cout << "The circular linked list is empty." << endl;
+            return;
+        }
+
+        if (index == 0) // Insert at head if index is 0
+        {
+            insertAtHead(value);
+            return;
+        }
+
+        Node *new_node = new Node(value);
+        Node *temp = head;
+        int counter = 0;
+
+        // Traverse the list to the node just before the given index
+        while (counter < index - 1 && temp->Next != head)
+        {
+            temp = temp->Next;
+            counter++;
+        }
+
+        // If index is beyond the length of the list, insert at the end
+        if (temp->Next == head && counter < index - 1)
+        {
+            cout << "Index out of bounds. Inserting at the end." << endl;
+            insertAtTail(value);
+            return;
+        }
+
+        // Insert new_node after temp
+        new_node->Next = temp->Next;
+        temp->Next = new_node;
+    }
+
     void display()
     {
         if (!head)
@@ -89,7 +127,10 @@ int main()
     circularLL.insertAtHead(2);
     circularLL.insertAtHead(3);
     circularLL.insertAtHead(4);
+    circularLL.display();
 
+    // Insert at index 5 (which is out of bounds in this case)
+    circularLL.insertAtIndex(5, 5);
     circularLL.display();
 
     return EXIT_SUCCESS;
