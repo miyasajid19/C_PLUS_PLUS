@@ -29,10 +29,26 @@ int main()
     advance(ritr, 2);      // Advance by 2 positions
     cout << *ritr << endl; // Output: 3
 
+//traversal using ranged based loop
     for (auto val: list1)
     {
         cout<<val<<" ";
     }
     cout<<endl;
+
+    //using iterators
+    for (auto itr1=list1.begin();itr1!=list1.end();itr1++)
+    {
+        cout<<*itr1<<" ";
+    }
+    cout<<endl;
+    
+    //reverse traversal using iterators
+    for (auto itr1=list1.rbegin();itr1!=list1.rend();itr1++)
+    {
+        cout<<*itr1<<" ";
+    }
+    cout<<endl;
+
     return EXIT_SUCCESS;
 }
