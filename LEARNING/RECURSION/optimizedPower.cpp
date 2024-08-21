@@ -27,3 +27,4 @@ cout<<a<<" power "<<b<<" is ";
 cout<<power(a,b);
     return EXIT_SUCCESS;
 }
+// it has log q time complexity
