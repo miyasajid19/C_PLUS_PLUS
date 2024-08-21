@@ -50,16 +50,24 @@ int main()
     }
     cout << endl;
 
-//inserting elements to the list
-list<int>list2={1,2,4,5};
-auto itr2=list2.begin();
+    // inserting elements to the list
+    list<int> list2 = {1, 2, 4, 5};
+    auto itr2 = list2.begin();
     for (auto val : list2)
     {
         cout << val << " ";
     }
     cout << endl;
-advance(itr2,2);
-list2.insert(itr2,3);
+    advance(itr2, 2);
+    list2.insert(itr2, 3);
+    for (auto val : list2)
+    {
+        cout << val << " ";
+    }
+    cout << endl;
+
+    // inserting the value count number of times
+    list2.insert(list2.end(), 2, 432);
     for (auto val : list2)
     {
         cout << val << " ";
