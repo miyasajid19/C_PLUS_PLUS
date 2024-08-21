@@ -40,32 +40,31 @@ public:
     void insertAtHead(int value)
     {
         Node *new_node = new Node(value);
-        if (!head) // If the list is empty
+        if (!head)
         {
             head = new_node;
-            new_node->Next = head; // Point to itself
+            new_node->Next = head;
             return;
         }
         Node *tail = head;
-        while (tail->Next != head) // Find the last node (tail)
+        while (tail->Next != head)
         {
             tail = tail->Next;
         }
-        // Insert new_node at the head
-        tail->Next = new_node;
         new_node->Next = head;
-        head = new_node; // Update the head to the new node
+        head = new_node;
+        tail->Next = head;
     }
 
     void insertAtIndex(int value, int index)
     {
-        if (!head)
+        if (index < 0)
         {
-            cout << "The circular linked list is empty." << endl;
+            cout << "Index cannot be negative." << endl;
             return;
         }
 
-        if (index == 0) // Insert at head if index is 0
+        if (index == 0)
         {
             insertAtHead(value);
             return;
@@ -75,24 +74,102 @@ public:
         Node *temp = head;
         int counter = 0;
 
-        // Traverse the list to the node just before the given index
         while (counter < index - 1 && temp->Next != head)
         {
             temp = temp->Next;
             counter++;
         }
 
-        // If index is beyond the length of the list, insert at the end
-        if (temp->Next == head && counter < index - 1)
+        if (counter < index - 1)
         {
             cout << "Index out of bounds. Inserting at the end." << endl;
             insertAtTail(value);
             return;
         }
 
-        // Insert new_node after temp
         new_node->Next = temp->Next;
         temp->Next = new_node;
+    }
+
+    void deleteFromHead()
+    {
+        if (!head)
+        {
+            cout << "The circular linked list is empty." << endl;
+            return;
+        }
+
+        if (head->Next == head)
+        {
+            delete head;
+            head = nullptr;
+            return;
+        }
+
+        Node *tail = head;
+        while (tail->Next != head)
+        {
+            tail = tail->Next;
+        }
+
+        Node *temp = head;
+        head = head->Next;
+        tail->Next = head;
+        delete temp;
+    }
+
+    void deleteFromTail()
+    {
+        if (!head)
+        {
+            cout << "The circular linked list is empty." << endl;
+            return;
+        }
+
+        if (head->Next == head)
+        {
+            delete head;
+            head = nullptr;
+            return;
+        }
+
+        Node *temp = head;
+        Node *prev = nullptr;
+
+        while (temp->Next != head)
+        {
+            prev = temp;
+            temp = temp->Next;
+        }
+
+        prev->Next = head;
+        delete temp;
+    }
+
+    void update(int value, int index)
+    {
+        if (!head)
+        {
+            cout << "The circular linked list is empty, so can't update." << endl;
+            return;
+        }
+
+        Node *temp = head;
+        int counter = 0;
+
+        while (counter < index && temp->Next != head)
+        {
+            temp = temp->Next;
+            counter++;
+        }
+
+        if (counter < index)
+        {
+            cout << "Index out of bounds. Cannot update." << endl;
+            return;
+        }
+
+        temp->value = value;
     }
 
     void display()
@@ -129,9 +206,34 @@ int main()
     circularLL.insertAtHead(4);
     circularLL.display();
 
-    // Insert at index 5 (which is out of bounds in this case)
     circularLL.insertAtIndex(5, 5);
     circularLL.display();
-
+    circularLL.deleteFromHead();
+    circularLL.display();
+    circularLL.deleteFromHead();
+    circularLL.display();
+    circularLL.deleteFromHead();
+    circularLL.display();
+    circularLL.deleteFromHead();
+    circularLL.display();
+    circularLL.deleteFromHead();
+    circularLL.display();
+    circularLL.update(432, 0);
+    circularLL.display();
+    circularLL.update(433, 1);
+    circularLL.display();
+    circularLL.update(434, 2);
+    circularLL.display();
+    circularLL.update(435, 3);
+    circularLL.display();
+    circularLL.update(407, 4);
+    circularLL.display();
+    circularLL.update(432, 5);
+    circularLL.display();
+    circularLL.deleteFromTail();
+    circularLL.display();
+    circularLL.deleteFromTail();
+    circularLL.display();
+    circularLL.deleteFromTail();
     return EXIT_SUCCESS;
 }
