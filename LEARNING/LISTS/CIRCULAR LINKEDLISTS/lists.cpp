@@ -29,5 +29,10 @@ int main()
     advance(ritr, 2);      // Advance by 2 positions
     cout << *ritr << endl; // Output: 3
 
+    for (auto val: list1)
+    {
+        cout<<val<<" ";
+    }
+    cout<<endl;
     return EXIT_SUCCESS;
 }
