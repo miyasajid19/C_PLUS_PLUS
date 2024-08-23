@@ -101,7 +101,7 @@ public:
             Pop_Back();
         }
 
-        Pop_Back(); // Remove the front element
+        Pop_Back();
 
         while (!Temp.isEmpty())
         {
@@ -125,7 +125,7 @@ public:
             Pop_Back();
         }
 
-        int result = Top(); // Peek the front element
+        int result = Top();
 
         while (!Temp.isEmpty())
         {
