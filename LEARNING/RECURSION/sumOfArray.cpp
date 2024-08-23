@@ -32,7 +32,7 @@ int main()
         cin >> arr[i];
     }
 
-    cout << "The maximum element present in the array is " << SumElement(arr, 0, *size) << endl;
+    cout << "The sum of all the  element present in the array is " << SumElement(arr, 0, *size) << endl;
 
     // Deallocate memory
     delete[] arr;
