@@ -1,23 +1,22 @@
 #include <iostream>
-#include <cstdlib>
 using namespace std;
 
-class Stacks
+class Stack
 {
 public:
     int size, capacity;
-    int *arr = nullptr;
+    int *arr;
 
-    Stacks(int capacity)
+    Stack(int capacity)
     {
         this->capacity = capacity;
         this->size = 0;
         this->arr = new int[capacity];
     }
 
-    ~Stacks()
+    ~Stack()
     {
-        Erase();
+        delete[] arr;
     }
 
     bool isEmpty()
@@ -27,114 +26,129 @@ public:
 
     bool isFull()
     {
-        return this->size == this->capacity;
+        return size == capacity;
     }
 
-    void Push_Back(int value)
+    void push(int value)
     {
         if (isFull())
         {
-            cout << "Overflow" << endl;
+            cout << "Stack Overflow" << endl;
             return;
         }
-        this->arr[size++] = value;
+        arr[size++] = value;
     }
 
-    void Pop_Back()
+    void pop()
     {
         if (isEmpty())
         {
-            cout << "Underflow" << endl;
+            cout << "Stack Underflow" << endl;
             return;
         }
         --size;
     }
 
-    int Top()
+    int top()
     {
         if (isEmpty())
         {
             cout << "Stack is empty" << endl;
             return -1;
         }
-        return this->arr[this->size - 1];
+        return arr[size - 1];
     }
 
-    int Size()
+    int getSize()
     {
-        return this->size;
-    }
-
-    void Erase()
-    {
-        delete[] arr;
+        return size;
     }
 };
 
-class Queue : public Stacks
+class Queue
 {
-public:
-    Queue(int capacity) : Stacks(capacity) {}
+private:
+    Stack stack1, stack2;
 
-    void Enqueue(int value)
+public:
+    Queue(int capacity) : stack1(capacity), stack2(capacity) {}
+
+    void enqueue(int value)
     {
-        if(isFull())
+        if (stack1.isFull())
         {
+            cout << "Queue is full" << endl;
             return;
         }
-        Stacks temp(capacity);
-        while(not isEmpty())
-        {
-            temp.Push_Back(Top());
-            Pop_Back();
-        }
-        Push_Back(value);
-        while(not temp.isEmpty())
-        {
-            Push_Back(temp.Top());
-            temp.Pop_Back();
-        }
+        stack1.push(value);
     }
-    void Dequeue()
+
+    void dequeue()
     {
-        if(isEmpty())
+        if (stack1.isEmpty() && stack2.isEmpty())
         {
+            cout << "Queue is empty" << endl;
             return;
         }
-        Pop_Back();
+
+        if (stack2.isEmpty())
+        {
+            while (!stack1.isEmpty())
+            {
+                stack2.push(stack1.top());
+                stack1.pop();
+            }
+        }
+
+        stack2.pop();
     }
-    int Peek()
+
+    int peek()
     {
-        return Top();
+        if (stack2.isEmpty())
+        {
+            while (!stack1.isEmpty())
+            {
+                stack2.push(stack1.top());
+                stack1.pop();
+            }
+        }
+
+        if (stack2.isEmpty())
+        {
+            cout << "Queue is empty" << endl;
+            return -1;
+        }
+        return stack2.top();
     }
 };
 
 int main()
 {
-//#ifndef ONLINE_JUDGE
-//    freopen("../input.txt", "r", stdin);
-//    freopen("../output.txt", "w", stdout);
-//#endif
+#ifndef ONLINE_JUDGE
+    freopen("../input.txt", "r", stdin);
+    freopen("../output.txt", "w", stdout);
+#endif
 
     Queue queue(5); // Queue of capacity 5
 
     // Enqueue elements
     for (int i = 0; i < 6; i++) // Trying to enqueue 6 elements (overflow expected)
     {
-        queue.Enqueue(i);
-        if (!queue.isEmpty())
+        queue.enqueue(i);
+        if (queue.peek() != -1)
         {
-            cout << "Front element after enqueue: " << queue.Peek() << endl << endl;
+            cout << "Front element after enqueue: " << queue.peek() << endl << endl;
         }
     }
 
     // Dequeue elements
     for (int i = 0; i < 5; i++) // Dequeue all elements
     {
-        queue.Dequeue();
-        if (!queue.isEmpty())
+        queue.dequeue();
+        if (queue.peek() != -1)
         {
-            cout << "Front element after dequeue: " << queue.Peek() << endl << endl;
+            cout << "Front element after dequeue: " << queue.peek() << endl << endl;
         }
         else
         {
@@ -142,5 +156,5 @@ int main()
         }
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }
