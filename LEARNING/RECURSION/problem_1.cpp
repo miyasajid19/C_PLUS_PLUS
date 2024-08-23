@@ -1,4 +1,6 @@
-// 
+// Given a number n. Find the increasing sequence from 1 to n without using any loop. 
+// Constraint: 0<n<=le6
+//  Inputl: n = 4 Output 1:1234 Input2 : n = 2 Output2:12
 #include <iostream>
 #include<cstdlib>
 using namespace std;
