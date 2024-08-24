@@ -8,21 +8,21 @@
 // Output2: No
 #include <iostream>
 #include <cstdlib>
-#include<vector>
+#include <vector>
 using namespace std;
-bool findX(vector<int>arr, int value)
+bool findX(vector<int> arr, int value)
 {
-    
-    if(arr.size()==0)
+
+    if (arr.size() == 0)
     {
-       return false; 
+        return false;
     }
-    if(arr.back()==value)
+    if (arr.back() == value)
     {
         return true;
     }
     arr.pop_back();
-    return findX(arr,value);
+    return findX(arr, value);
 }
 int main()
 {
@@ -30,18 +30,18 @@ int main()
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-vector<int> arr;
-int size,num;
-cout<<"how many data do you have?"<<endl;
-cin>>size;
-for(int i =0;i<size;i++)
-{
-    cout<<"data "<<i+1<<":::"<<endl;
-    cin>>num;
-    arr.push_back(num);
-}
-cout<<"Enter the data you want ot search??"<<endl;
-cin>>num;
-findX(arr,num)?cout<<"element is present in the chuunk of data"<<endl:cout<<"element is not present in the chunk of data"<<endl;
+    vector<int> arr;
+    int size, num;
+    cout << "how many data do you have?" << endl;
+    cin >> size;
+    for (int i = 0; i < size; i++)
+    {
+        cout << "data " << i + 1 << ":::" << endl;
+        cin >> num;
+        arr.push_back(num);
+    }
+    cout << "Enter the data you want ot search??" << endl;
+    cin >> num;
+    findX(arr, num) ? cout << "element is present in the chuunk of data" << endl : cout << "element is not present in the chunk of data" << endl;
     return EXIT_SUCCESS;
 }
