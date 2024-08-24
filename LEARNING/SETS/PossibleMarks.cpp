@@ -42,5 +42,6 @@ int main()
     {
         cout << value << " ";
     }
+    cout<<endl<<"total : "<<ans.size();
     return EXIT_SUCCESS;
 }
