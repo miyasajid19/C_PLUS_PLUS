@@ -30,5 +30,7 @@ int main()
     {
         cout << name << endl;
     }
+    delete size;
+    delete str;
     return EXIT_SUCCESS;
 }
