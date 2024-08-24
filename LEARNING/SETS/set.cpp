@@ -71,36 +71,36 @@ int main()
         cout << value << " ";
     }
     cout << endl;
-// itr one is no longer pointing to the beginning of the set
+    // itr one is no longer pointing to the beginning of the set
     itr1 = set2.begin();
     advance(itr1, 3);
     itr2 = set2.end();
     advance(itr2, -2);
     set2.erase(itr1, itr2);
 
-    for ( auto value : set2)
+    for (auto value : set2)
     {
         cout << value << " ";
     }
     cout << endl;
-    cout<<set2.size()<<endl;
-    cout<<boolalpha<<set2.empty()<<endl;
-    set2.erase(set2.begin(),set2.end());
-    cout<<boolalpha<<set2.empty()<<endl;
+    cout << set2.size() << endl;
+    cout << boolalpha << set2.empty() << endl;
+    set2.erase(set2.begin(), set2.end());
+    cout << boolalpha << set2.empty() << endl;
 
-    //set1
-    itr2=set1.find(3);
-    cout<<*itr2<<endl;
-    itr2=set1.find(432);
-    if(itr2==set1.end())
+    // set1
+    itr2 = set1.find(3);
+    cout << *itr2 << endl;
+    itr2 = set1.find(432);
+    if (itr2 == set1.end())
     {
-        cout<<"element is not present"<<endl;
+        cout << "element is not present" << endl;
     }
-    itr1=set1.lower_bound(2);
-    cout<<*itr1<<endl;    
-    itr1=set1.lower_bound(0);
-    cout<<*itr1<<endl;    
-    itr1=set1.upper_bound(2);
-    cout<<*itr1<<endl;    
+    itr1 = set1.lower_bound(2);
+    cout << *itr1 << endl;
+    itr1 = set1.lower_bound(0);
+    cout << *itr1 << endl;
+    itr1 = set1.upper_bound(2);
+    cout << *itr1 << endl;
     return EXIT_SUCCESS;
 }
