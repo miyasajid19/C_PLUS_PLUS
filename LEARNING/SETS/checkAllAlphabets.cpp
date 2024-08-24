@@ -1,38 +1,37 @@
 #include <iostream>
+#include <cstdlib>
+#include <string>
 #include <set>
-#include <cctype> // For std::tolower
+#include <algorithm>
 using namespace std;
-
-bool checkAlphabets(const string &str)
+bool checkAlphabets(string str)
 {
     if (str.size() < 26)
     {
         return false;
     }
-
-    set<char> charSet;
-
-    for (char c : str)
+    transform(str.begin(), str.end(), str.begin(),
+              [](unsigned char c)
+              { return tolower(c); });
+    set<char> set1;
+    for (auto x : str)
     {
-        // Convert to lowercase and add to set if it is an alphabetic character
-        char lowerC = tolower(static_cast<unsigned char>(c));
-        if (lowerC >= 'a' && lowerC <= 'z')
-        {
-            charSet.insert(lowerC);
-        }
+        set1.insert(x);
     }
 
-    // Check if we have all 26 letters
-    return charSet.size() == 26;
-}
+    return set1.size()==26;
 
+}
 int main()
 {
-    string str;
-    cout << "Enter any string: " << endl;
-    getline(cin, str);
-
-    cout << boolalpha << checkAlphabets(str) << endl;
-
-    return 0;
+#ifndef ONLINE_JUDGE
+    freopen("../input.txt", "r", stdin);
+    freopen("../output.txt", "w", stdout);
+#endif
+    string *str = nullptr;
+    str = new string;
+    cout << "enter  any string" << endl;
+    getline(cin, *str);
+    cout << boolalpha << checkAlphabets(*str) << endl;
+    return EXIT_SUCCESS;
 }
