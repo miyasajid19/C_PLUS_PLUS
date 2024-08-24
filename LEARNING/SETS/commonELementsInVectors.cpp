@@ -43,21 +43,21 @@ int main()
         v2.erase(v2.begin());
     }
     set<int>::iterator itr;
-    int sum=0;
-    for(itr=set1.begin();itr!=set1.end();itr++)
+    int sum = 0;
+    for (itr = set1.begin(); itr != set1.end(); itr++)
     {
-        if(set2.find(*itr)!=set2.end())
+        if (set2.find(*itr) != set2.end())
         {
             ans.insert(*itr);
-            sum=sum+*itr;
+            sum = sum + *itr;
         }
     }
-    cout<<"common elements are :::"<<endl;
-    for(auto common: ans)
+    cout << "common elements are :::" << endl;
+    for (auto common : ans)
     {
-        cout<<common<<" ";
+        cout << common << " ";
     }
-    cout<<endl;
-    cout<<"the sum of common elements in two vectors is"<<sum;
+    cout << endl;
+    cout << "the sum of common elements in two vectors is" << sum;
     return EXIT_SUCCESS;
 }
