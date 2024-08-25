@@ -24,12 +24,15 @@ void combination(string str, int index, string current, vector<string> &result, 
 int main()
 {
 #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
+    freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
     vector<string> map = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     vector<string> result;
-    combination("23", 0, "", result, map);
+    string str1;
+    cout << "enter keypad numbers : " << endl;
+    cin >> str1;
+    combination(str1, 0, "", result, map);
     for (string str : result)
     {
         cout << str << "\n";
