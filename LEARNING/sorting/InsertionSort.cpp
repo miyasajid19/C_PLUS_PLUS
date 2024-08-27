@@ -27,3 +27,15 @@ int main()
     }
     return EXIT_SUCCESS;
 }
+/*
+intutions:
+    repeatedly take elements from unsorted sub array and then insert it into the sorted sub array
+stabilty:
+    it is stable sorting algorithm 
+worst time complexity:
+    O(n^2)
+best time complexity:
+    O(n)
+application:
+    when there is few unsorted elements
+*/
