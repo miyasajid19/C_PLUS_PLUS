@@ -123,32 +123,32 @@ public:
     }
     void Delete(int index)
     {
-        if(head==nullptr)
+        if (head == nullptr)
         {
             return;
         }
-        if(index==0)
+        if (index == 0)
         {
             Pop_Front();
             return;
         }
-        Node* indexer=head;
-        int current=0;
-        while(indexer !=nullptr and current<index-1)
+        Node *indexer = head;
+        int current = 0;
+        while (indexer != nullptr and current < index - 1)
         {
             current++;
-            indexer=indexer->Next;
+            indexer = indexer->Next;
         }
-        if(indexer==nullptr)
+        if (indexer == nullptr)
         {
             return;
         }
-        if(indexer->Next==nullptr)
+        if (indexer->Next == nullptr)
         {
             Pop_Back();
         }
-        Node* ThatNode=indexer->Next;
-        indexer->Next=indexer->Next->Next;
+        Node *ThatNode = indexer->Next;
+        indexer->Next = indexer->Next->Next;
         delete ThatNode;
     }
     void display()
@@ -177,17 +177,17 @@ int main()
     ll.display();
     ll.Push_Front(0);
     ll.display();
-    ll.Insert(432, 3);
+    ll.Insert(434, 3);
     ll.display();
-    ll.Insert(432, 0);
+    ll.Insert(420, 0);
     ll.display();
-    ll.Insert(432, 233);
+    ll.Insert(433, 233);
     ll.display();
     ll.Insert(432, 2);
     ll.display();
-    ll.Update(2323, 1);
+    ll.Update(407, 1);
     ll.display();
-    ll.Update(2323, 4);
+    ll.Update(13, 4);
     ll.display();
     ll.Pop_Front();
     ll.display();
