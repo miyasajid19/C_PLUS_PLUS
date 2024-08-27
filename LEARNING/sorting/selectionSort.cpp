@@ -82,6 +82,8 @@ int main()
 
 
 /*
+intutions:
+    repeatedly find the minimum or maximum elements and placed it in first or last of "unsorted array"
 time complexity :: O(n^2)
 application :: when we know that the array will be sorted by swapping thenn go for selection sort
 no.of swaps :::: O(n) in worst case
