@@ -146,80 +146,201 @@ public:
     }
     void addition(Sparse other)
     {
-        int result[this->rows][3];
+        int result[this->nonZeros + other.nonZeros + 1][3];
         result[0][0] = this->rows;
         result[0][1] = this->columns;
         result[0][2] = 0;
-        int k = 1;
-        if (this->rows == other.rows and this->columns == other.columns)
+
+        if (this->rows == other.rows && this->columns == other.columns)
         {
-            int size1 = this->nonZeros, size2 = other.nonZeros;
-            int index1 = 1;
-            int index2 = 1;
-            int index3 = 1;
-            while (index1 != this->nonZeros and index2 != other.nonZeros)
+            int index1 = 1, index2 = 1, index3 = 1;
+
+            while (index1 <= this->nonZeros && index2 <= other.nonZeros)
             {
-                if ((sparseMatrix[index1][0] == other.sparseMatrix[index2][0]))
+                if (this->sparseMatrix[index1][0] == other.sparseMatrix[index2][0])
                 {
-                    if (sparseMatrix[index1][1] == other.sparseMatrix[index2][1])
+                    if (this->sparseMatrix[index1][1] == other.sparseMatrix[index2][1])
                     {
-                        result[index3][0] = sparseMatrix[index1][0];
-                        result[index3][1] = sparseMatrix[index1][1];
-                        result[index3][2] = sparseMatrix[index1][2] + other.sparseMatrix[index1][2];
+                        result[index3][0] = this->sparseMatrix[index1][0];
+                        result[index3][1] = this->sparseMatrix[index1][1];
+                        result[index3][2] = this->sparseMatrix[index1][2] + other.sparseMatrix[index2][2];
                         index1++;
                         index2++;
-                        index3++;
                     }
-                    else if (sparseMatrix[index1][1] < other.sparseMatrix[index1][1])
+                    else if (this->sparseMatrix[index1][1] < other.sparseMatrix[index2][1])
                     {
-                        result[index3][0] = sparseMatrix[index1][0];
-                        result[index3][1] = sparseMatrix[index1][1];
-                        result[index3][2] = sparseMatrix[index1][2];
+                        result[index3][0] = this->sparseMatrix[index1][0];
+                        result[index3][1] = this->sparseMatrix[index1][1];
+                        result[index3][2] = this->sparseMatrix[index1][2];
                         index1++;
-                        index3++;
                     }
                     else
                     {
-                        result[index3][0] = other.sparseMatrix[index1][0];
-                        result[index3][1] = other.sparseMatrix[index1][1];
-                        result[index3][2] = other.sparseMatrix[index1][2];
+                        result[index3][0] = other.sparseMatrix[index2][0];
+                        result[index3][1] = other.sparseMatrix[index2][1];
+                        result[index3][2] = other.sparseMatrix[index2][2];
                         index2++;
-                        index3++;
                     }
                 }
+                else if (this->sparseMatrix[index1][0] < other.sparseMatrix[index2][0])
+                {
+                    result[index3][0] = this->sparseMatrix[index1][0];
+                    result[index3][1] = this->sparseMatrix[index1][1];
+                    result[index3][2] = this->sparseMatrix[index1][2];
+                    index1++;
+                }
+                else
+                {
+                    result[index3][0] = other.sparseMatrix[index2][0];
+                    result[index3][1] = other.sparseMatrix[index2][1];
+                    result[index3][2] = other.sparseMatrix[index2][2];
+                    index2++;
+                }
+                index3++;
             }
-            while (index1 != this->nonZeros)
+
+            while (index1 <= this->nonZeros)
             {
-                result[index3][0] = sparseMatrix[index1][0];
-                result[index3][1] = sparseMatrix[index1][1];
-                result[index3][2] = sparseMatrix[index1][2];
+                result[index3][0] = this->sparseMatrix[index1][0];
+                result[index3][1] = this->sparseMatrix[index1][1];
+                result[index3][2] = this->sparseMatrix[index1][2];
                 index1++;
                 index3++;
             }
-            while (index2 != other.nonZeros)
+
+            while (index2 <= other.nonZeros)
             {
-                result[index3][0] = other.sparseMatrix[index1][0];
-                result[index3][1] = other.sparseMatrix[index1][1];
-                result[index3][2] = other.sparseMatrix[index1][2];
-                index1++;
+                result[index3][0] = other.sparseMatrix[index2][0];
+                result[index3][1] = other.sparseMatrix[index2][1];
+                result[index3][2] = other.sparseMatrix[index2][2];
+                index2++;
                 index3++;
             }
+
             result[0][2] = index3 - 1;
+            cout << "Resultant Sparse Matrix after Addition:" << endl;
+            cout << "Row\tCol\tValue" << endl;
+            for (int i = 0; i < index3; i++)
+            {
+                cout << result[i][0] << "\t" << result[i][1] << "\t" << result[i][2] << endl;
+            }
+        }
+        else
+        {
+            cout << "Matrices cannot be added as dimensions do not match." << endl;
         }
     }
-};
+    void Multiplication(Sparse &other)
+    {
+        if (this->columns != other.rows)
+        {
+            cout << "Matrices cannot be multiplied due to dimension mismatch." << endl;
+            return;
+        }
 
+        int **result = new int *[this->rows];
+        for (int i = 0; i < this->rows; i++)
+        {
+            result[i] = new int[other.columns]();
+        }
+
+        for (int i = 1; i <= this->nonZeros; i++)
+        {
+            for (int j = 1; j <= other.nonZeros; j++)
+            {
+                if (this->sparseMatrix[i][1] == other.sparseMatrix[j][0])
+                {
+                    result[this->sparseMatrix[i][0]][other.sparseMatrix[j][1]] +=
+                        this->sparseMatrix[i][2] * other.sparseMatrix[j][2];
+                }
+            }
+        }
+
+        int resultNonZeros = 0;
+        for (int i = 0; i < this->rows; i++)
+        {
+            for (int j = 0; j < other.columns; j++)
+            {
+                if (result[i][j] != 0)
+                    resultNonZeros++;
+            }
+        }
+
+        int **sparseResult = new int *[resultNonZeros + 1];
+        for (int i = 0; i <= resultNonZeros; i++)
+        {
+            sparseResult[i] = new int[3];
+        }
+        sparseResult[0][0] = this->rows;
+        sparseResult[0][1] = other.columns;
+        sparseResult[0][2] = resultNonZeros;
+
+        int k = 1;
+        for (int i = 0; i < this->rows; i++)
+        {
+            for (int j = 0; j < other.columns; j++)
+            {
+                if (result[i][j] != 0)
+                {
+                    sparseResult[k][0] = i;
+                    sparseResult[k][1] = j;
+                    sparseResult[k][2] = result[i][j];
+                    k++;
+                }
+            }
+        }
+
+        cout << "Resultant Sparse Matrix after Multiplication:" << endl;
+        cout << "Row\tCol\tValue" << endl;
+        for (int i = 0; i <= resultNonZeros; i++)
+        {
+            cout << sparseResult[i][0] << "\t" << sparseResult[i][1] << "\t" << sparseResult[i][2] << endl;
+        }
+
+        for (int i = 0; i < this->rows; i++)
+        {
+            delete[] result[i];
+        }
+        delete[] result;
+
+        for (int i = 0; i <= resultNonZeros; i++)
+        {
+            delete[] sparseResult[i];
+        }
+        delete[] sparseResult;
+    }
+};
 int main()
 {
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
-#endif
-    Sparse mat(3, 3);
-    mat.setMatrix();
-    mat.sparseit();
-    mat.displaySparse();
-    mat.Transpose();
-    mat.displayTransposedSparse();
+    int rows1, cols1, rows2, cols2;
+
+    cout << "Enter dimensions for the first sparse matrix (rows columns): ";
+    cin >> rows1 >> cols1;
+    Sparse mat1(rows1, cols1);
+    cout << "Enter values for the first sparse matrix:" << endl;
+    mat1.setMatrix();
+    mat1.sparseit();
+    cout << "Sparse matrix 1:" << endl;
+    mat1.displaySparse();
+
+    cout << "Enter dimensions for the second sparse matrix (rows columns): ";
+    cin >> rows2 >> cols2;
+    Sparse mat2(rows2, cols2);
+    cout << "Enter values for the second sparse matrix:" << endl;
+    mat2.setMatrix();
+    mat2.sparseit();
+    cout << "Sparse matrix 2:" << endl;
+    mat2.displaySparse();
+
+    if (cols1 == rows2)
+    {
+        cout << "Multiplying sparse matrix 1 and sparse matrix 2..." << endl;
+        mat1.Multiplication(mat2);
+    }
+    else
+    {
+        cout << "Matrices cannot be multiplied due to dimension mismatch." << endl;
+    }
+
     return EXIT_SUCCESS;
 }
