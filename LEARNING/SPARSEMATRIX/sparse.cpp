@@ -4,13 +4,14 @@ using namespace std;
 
 class Sparse
 {
+public:
     int **arr;
     int **sparseMatrix;
     int **transposedSparseMatrix;
     int rows;
     int columns;
     int nonZeros;
-    
+
     int countNonZeros()
     {
         int count = 0;
@@ -25,7 +26,6 @@ class Sparse
         return count;
     }
 
-public:
     Sparse(int rows, int columns)
     {
         this->rows = rows;
@@ -99,7 +99,7 @@ public:
         {
             for (int j = i + 1; j <= nonZeros; j++)
             {
-                if (transposedSparseMatrix[i][0] > transposedSparseMatrix[j][0] || 
+                if (transposedSparseMatrix[i][0] > transposedSparseMatrix[j][0] ||
                     (transposedSparseMatrix[i][0] == transposedSparseMatrix[j][0] && transposedSparseMatrix[i][1] > transposedSparseMatrix[j][1]))
                 {
                     swap(transposedSparseMatrix[i], transposedSparseMatrix[j]);
@@ -115,7 +115,7 @@ public:
         {
             transposedSparseMatrix[i] = new int[3];
         }
-        transposedSparseMatrix[0][0] = this->columns;  // rows and columns swapped for transpose
+        transposedSparseMatrix[0][0] = this->columns; // rows and columns swapped for transpose
         transposedSparseMatrix[0][1] = this->rows;
         transposedSparseMatrix[0][2] = this->nonZeros;
 
@@ -144,14 +144,77 @@ public:
             cout << transposedSparseMatrix[i][0] << "\t" << transposedSparseMatrix[i][1] << "\t" << transposedSparseMatrix[i][2] << endl;
         }
     }
+    void addition(Sparse other)
+    {
+        int result[this->rows][3];
+        result[0][0] = this->rows;
+        result[0][1] = this->columns;
+        result[0][2] = 0;
+        int k = 1;
+        if (this->rows == other.rows and this->columns == other.columns)
+        {
+            int size1 = this->nonZeros, size2 = other.nonZeros;
+            int index1 = 1;
+            int index2 = 1;
+            int index3 = 1;
+            while (index1 != this->nonZeros and index2 != other.nonZeros)
+            {
+                if ((sparseMatrix[index1][0] == other.sparseMatrix[index2][0]))
+                {
+                    if (sparseMatrix[index1][1] == other.sparseMatrix[index2][1])
+                    {
+                        result[index3][0] = sparseMatrix[index1][0];
+                        result[index3][1] = sparseMatrix[index1][1];
+                        result[index3][2] = sparseMatrix[index1][2] + other.sparseMatrix[index1][2];
+                        index1++;
+                        index2++;
+                        index3++;
+                    }
+                    else if (sparseMatrix[index1][1] < other.sparseMatrix[index1][1])
+                    {
+                        result[index3][0] = sparseMatrix[index1][0];
+                        result[index3][1] = sparseMatrix[index1][1];
+                        result[index3][2] = sparseMatrix[index1][2];
+                        index1++;
+                        index3++;
+                    }
+                    else
+                    {
+                        result[index3][0] = other.sparseMatrix[index1][0];
+                        result[index3][1] = other.sparseMatrix[index1][1];
+                        result[index3][2] = other.sparseMatrix[index1][2];
+                        index2++;
+                        index3++;
+                    }
+                }
+            }
+            while (index1 != this->nonZeros)
+            {
+                result[index3][0] = sparseMatrix[index1][0];
+                result[index3][1] = sparseMatrix[index1][1];
+                result[index3][2] = sparseMatrix[index1][2];
+                index1++;
+                index3++;
+            }
+            while (index2 != other.nonZeros)
+            {
+                result[index3][0] = other.sparseMatrix[index1][0];
+                result[index3][1] = other.sparseMatrix[index1][1];
+                result[index3][2] = other.sparseMatrix[index1][2];
+                index1++;
+                index3++;
+            }
+            result[0][2] = index3 - 1;
+        }
+    }
 };
 
 int main()
 {
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        // freopen("output.txt", "w", stdout);
-    #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
+#endif
     Sparse mat(3, 3);
     mat.setMatrix();
     mat.sparseit();
