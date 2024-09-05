@@ -19,18 +19,41 @@ vector<int> Intersection(vector<int> A, vector<int> B)
     }
     return result;
 }
+vector<int> OptimizedIntersection(vector<int> A, vector<int> B)
+{
+    vector<int> result;
+    int i = 0, j = 0;
+    while (i < A.size() and j < B.size())
+    {
+        if (A[i] == B[j])
+        {
+            result.push_back(A[i]);
+            i++;
+            j++;
+        }
+        else if (A[i] > B[j])
+        {
+            j++;
+        }
+        else
+        {
+            i++;
+        }
+    }
+    return result;
+}
 int main()
 {
 #ifndef ONLINE_JUDGE
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-    vector<int> A = {1,1,1,1,1,1,1,1,1,1,2,3,3,3};
-    vector<int> B = {1, 1, 6,6};
-    vector<int>result=Intersection(A,B);
-    for (auto x: result)
+    vector<int> A = {1, 1, 1, 1, 1, 1, 1, 1, 1,6, 1, 2, 3, 3, 3};
+    vector<int> B = {1, 1, 6, 6};
+    vector<int> result = OptimizedIntersection(A, B);
+    for (auto x : result)
     {
-        cout<<x<<" ";
+        cout << x << " ";
     }
     return EXIT_SUCCESS;
 }
