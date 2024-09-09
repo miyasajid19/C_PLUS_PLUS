@@ -138,15 +138,50 @@ public:
         Term *temp = head;
         while (temp->Next != nullptr)
         {
-           
+
             cout << temp->coefficient << " * ( x ^ " << temp->index << " ) + ";
             temp = temp->Next;
         }
-        cout<<temp->coefficient<<" * ( x ^ "<<temp->index <<" ) "<< endl;
+        cout << temp->coefficient << " * ( x ^ " << temp->index << " ) " << endl;
     }
-    Polynomial operator+(Polynomial other)
+    Polynomial operator+(const Polynomial &other) const
     {
-        
+        Polynomial result;
+
+        Term *temp = head;
+        Term *otherTemp = other.head;
+
+        Term *resultTail = nullptr;
+        while (temp != nullptr && otherTemp != nullptr)
+        {
+            if (temp->index == otherTemp->index)
+            {
+                result.InsertAtTail(temp->coefficient + otherTemp->coefficient, temp->index);
+                temp = temp->Next;
+                otherTemp = otherTemp->Next;
+            }
+            else if (temp->index > otherTemp->index)
+            {
+                result.InsertAtTail(temp->coefficient, temp->index);
+                temp = temp->Next;
+            }
+            else
+            {
+                result.InsertAtTail(otherTemp->coefficient, otherTemp->index);
+                otherTemp = otherTemp->Next;
+            }
+        }
+        while (temp != nullptr)
+        {
+            result.InsertAtTail(temp->coefficient, temp->index);
+            temp = temp->Next;
+            while (otherTemp != nullptr)
+            {
+                result.InsertAtTail(otherTemp->coefficient, otherTemp->index);
+                otherTemp = otherTemp->Next;
+            }
+        }
+        return result;
     }
 };
 int main()
@@ -156,14 +191,16 @@ int main()
     freopen("../../output.txt", "w", stdout);
 #endif
     Polynomial A1;
-    A1.InsertAtTail(1,2);
-    A1.InsertAtTail(2,1);
-    A1.InsertAtTail(1,0);
+    A1.InsertAtTail(1, 2);
+    A1.InsertAtTail(2, 1);
+    A1.InsertAtTail(1, 0);
     A1.Display();
     Polynomial B1;
-    B1.InsertAtTail(4,2);
-    B1.InsertAtTail(4,1);
-    B1.InsertAtTail(1,0);
+    B1.InsertAtTail(4, 2);
+    B1.InsertAtTail(4, 1);
+    B1.InsertAtTail(1, 0);
     B1.Display();
+    Polynomial result=A1+B1;
+    result.Display();
     return EXIT_SUCCESS;
 }
