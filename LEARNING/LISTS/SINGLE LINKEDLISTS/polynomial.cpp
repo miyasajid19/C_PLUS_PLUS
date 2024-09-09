@@ -51,18 +51,31 @@ class LinkedList
         }
         Node *temp = head;
         int counter = 0;
-        Node* new_node=new Node(coefficient, power);
+        Node *new_node = new Node(coefficient, power);
         while (temp != nullptr and counter < index)
         {
             temp = temp->Next;
             counter++;
         }
-        if(temp=nullptr)
+        if (temp = nullptr)
         {
-            cout<<"Index out of bound"<<endl;
+            cout << "Index out of bound" << endl;
             delete new_node;
             return;
         }
+        new_node->Next = temp->Next;
+        temp->Next = new_node;
+    }
+    void DeleteFromHead()
+    {
+        if (head == nullptr)
+        {
+            cout << "list is alsready empty" << endl;
+            return;
+        }
+        Node *temp = head;
+        head=head->Next;
+        delete temp;
     }
 };
 int main()
