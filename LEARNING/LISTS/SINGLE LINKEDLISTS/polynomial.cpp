@@ -74,9 +74,31 @@ class LinkedList
             return;
         }
         Node *temp = head;
-        head=head->Next;
+        head = head->Next;
         delete temp;
     }
+    void DeleteFromTail()
+    {
+        if (head == nullptr)
+        {
+            cout << "linked list is empty" << endl;
+            return;
+        }
+        if (head->Next == nullptr)
+        {
+            DeleteFromHead();
+            return;
+        }
+        Node *secondlastNode = head;
+        while (secondlastNode->Next->Next != nullptr)
+        {
+            secondlastNode = secondlastNode->Next;
+        }
+        Node *lastNode = secondlastNode->Next;
+        secondlastNode->Next = nullptr;
+        delete lastNode;
+    }
+    
 };
 int main()
 {
