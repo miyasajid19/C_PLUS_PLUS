@@ -98,7 +98,34 @@ class LinkedList
         secondlastNode->Next = nullptr;
         delete lastNode;
     }
-    
+    void Delete(int index)
+    {
+        if (index < 0)
+        {
+            cout << "invalid indexing" << endl;
+            return;
+        }
+        if (index == 0)
+        {
+            DeleteFromHead();
+            return;
+        }
+        int counter = 0;
+        Node *temp = head;
+        while (temp != nullptr and counter < index)
+        {
+            temp = temp->Next;
+            counter++;
+        }
+        if (temp == nullptr)
+        {
+            cout << "index out of bound" << endl;
+            return;
+        }
+        Node *toDelete = temp->Next;
+        temp->Next = temp->Next->Next;
+        delete toDelete;
+    }
 };
 int main()
 {
