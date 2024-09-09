@@ -1,41 +1,42 @@
 #include <iostream>
 #include <cstdlib>
 using namespace std;
-class Node
+class Term
 {
 public:
     int coefficient;
     int index;
-    Node *Next;
-    Node(int coefficient, int index)
+    Term *Next;
+    Term(int coefficient, int index)
     {
         this->coefficient = coefficient;
         this->index = index;
         this->Next = nullptr;
     }
 };
-class LinkedList
+class Polynomial
 {
-    Node *head;
-    LinkedList()
+public:
+    Term *head;
+    Polynomial()
     {
         this->head = nullptr;
     }
     void InsertAtHead(int coefficient, int index)
     {
-        Node *new_node = new Node(coefficient, index);
+        Term *new_node = new Term(coefficient, index);
         new_node->Next = head;
         head = new_node;
     }
     void InsertAtTail(int coefficient, int index)
     {
-        Node *new_node = new Node(coefficient, index);
+        Term *new_node = new Term(coefficient, index);
         if (head == nullptr)
         {
             head = new_node;
             return;
         }
-        Node *temp = head;
+        Term *temp = head;
         while (temp->Next != nullptr)
         {
             temp = temp->Next;
@@ -49,9 +50,9 @@ class LinkedList
             InsertAtHead(coefficient, power);
             return;
         }
-        Node *temp = head;
+        Term *temp = head;
         int counter = 0;
-        Node *new_node = new Node(coefficient, power);
+        Term *new_node = new Term(coefficient, power);
         while (temp != nullptr and counter < index)
         {
             temp = temp->Next;
@@ -73,7 +74,7 @@ class LinkedList
             cout << "list is alsready empty" << endl;
             return;
         }
-        Node *temp = head;
+        Term *temp = head;
         head = head->Next;
         delete temp;
     }
@@ -89,14 +90,14 @@ class LinkedList
             DeleteFromHead();
             return;
         }
-        Node *secondlastNode = head;
-        while (secondlastNode->Next->Next != nullptr)
+        Term *secondlastTerm = head;
+        while (secondlastTerm->Next->Next != nullptr)
         {
-            secondlastNode = secondlastNode->Next;
+            secondlastTerm = secondlastTerm->Next;
         }
-        Node *lastNode = secondlastNode->Next;
-        secondlastNode->Next = nullptr;
-        delete lastNode;
+        Term *lastTerm = secondlastTerm->Next;
+        secondlastTerm->Next = nullptr;
+        delete lastTerm;
     }
     void Delete(int index)
     {
@@ -111,7 +112,7 @@ class LinkedList
             return;
         }
         int counter = 0;
-        Node *temp = head;
+        Term *temp = head;
         while (temp != nullptr and counter < index)
         {
             temp = temp->Next;
@@ -122,9 +123,30 @@ class LinkedList
             cout << "index out of bound" << endl;
             return;
         }
-        Node *toDelete = temp->Next;
+        Term *toDelete = temp->Next;
         temp->Next = temp->Next->Next;
         delete toDelete;
+    }
+
+    void Display()
+    {
+        if (head == nullptr)
+        {
+            cout << "linked list is empty" << endl;
+            return;
+        }
+        Term *temp = head;
+        while (temp->Next != nullptr)
+        {
+           
+            cout << temp->coefficient << " * ( x ^ " << temp->index << " ) + ";
+            temp = temp->Next;
+        }
+        cout<<temp->coefficient<<" * ( x ^ "<<temp->index <<" ) "<< endl;
+    }
+    Polynomial operator+(Polynomial other)
+    {
+        
     }
 };
 int main()
@@ -133,6 +155,15 @@ int main()
     freopen("../../input.txt", "r", stdin);
     freopen("../../output.txt", "w", stdout);
 #endif
-    cout << "all i want was the love and what i get is the pain" << endl;
+    Polynomial A1;
+    A1.InsertAtTail(1,2);
+    A1.InsertAtTail(2,1);
+    A1.InsertAtTail(1,0);
+    A1.Display();
+    Polynomial B1;
+    B1.InsertAtTail(4,2);
+    B1.InsertAtTail(4,1);
+    B1.InsertAtTail(1,0);
+    B1.Display();
     return EXIT_SUCCESS;
 }
