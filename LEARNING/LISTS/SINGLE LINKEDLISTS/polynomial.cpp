@@ -130,6 +130,7 @@ public:
 
     void Display()
     {
+        
         if (head == nullptr)
         {
             cout << "linked list is empty" << endl;
@@ -144,6 +145,35 @@ public:
         }
         cout << temp->coefficient << " * ( x ^ " << temp->index << " ) " << endl;
     }
+    void CombineLikeTerms()
+    {
+        if (head == nullptr)
+            return;
+
+        Term *current = head;
+
+        while (current != nullptr)
+        {
+            Term *runner = current;
+
+            while (runner->Next != nullptr)
+            {
+                if (runner->Next->index == current->index)
+                {
+                    current->coefficient += runner->Next->coefficient;
+                    Term *temp = runner->Next;
+                    runner->Next = runner->Next->Next;
+                    delete temp;
+                }
+                else
+                {
+                    runner = runner->Next;
+                }
+            }
+            current = current->Next;
+        }
+    }
+
     Polynomial operator+(const Polynomial &other) const
     {
         Polynomial result;
@@ -183,6 +213,68 @@ public:
         }
         return result;
     }
+    Polynomial operator-(const Polynomial &other) const
+    {
+        Polynomial result;
+
+        Term *temp = head;
+        Term *otherTemp = other.head;
+
+        Term *resultTail = nullptr;
+        while (temp != nullptr && otherTemp != nullptr)
+        {
+            if (temp->index == otherTemp->index)
+            {
+                result.InsertAtTail(temp->coefficient - otherTemp->coefficient, temp->index);
+                temp = temp->Next;
+                otherTemp = otherTemp->Next;
+            }
+            else if (temp->index > otherTemp->index)
+            {
+                result.InsertAtTail(temp->coefficient, temp->index);
+                temp = temp->Next;
+            }
+            else
+            {
+                result.InsertAtTail(-otherTemp->coefficient, otherTemp->index);
+                otherTemp = otherTemp->Next;
+            }
+        }
+        while (temp != nullptr)
+        {
+            result.InsertAtTail(temp->coefficient, temp->index);
+            temp = temp->Next;
+            while (otherTemp != nullptr)
+            {
+                result.InsertAtTail(otherTemp->coefficient, otherTemp->index);
+                otherTemp = otherTemp->Next;
+            }
+        }
+        return result;
+    }
+
+    Polynomial operator*(const Polynomial &other) const
+    {
+        Polynomial result;
+
+        Term *temp = head;
+        Term *otherTemp = other.head;
+
+        Term *resultTail = nullptr;
+        while (temp != nullptr)
+        {
+
+            while (otherTemp != nullptr)
+            {
+                result.InsertAtTail(otherTemp->coefficient * temp->coefficient, otherTemp->index + temp->index);
+                otherTemp = otherTemp->Next;
+            }
+            temp = temp->Next;
+            otherTemp = other.head;
+        }
+        result.CombineLikeTerms();
+        return result;
+    }
 };
 int main()
 {
@@ -191,16 +283,30 @@ int main()
     freopen("../../output.txt", "w", stdout);
 #endif
     Polynomial A1;
-    A1.InsertAtTail(1, 2);
-    A1.InsertAtTail(2, 1);
-    A1.InsertAtTail(1, 0);
+    A1.InsertAtTail(3, 2);
+    A1.InsertAtTail(4, 1);
+    A1.InsertAtTail(5, 0);
+    cout << "Polynomial A1: ";
     A1.Display();
+
     Polynomial B1;
-    B1.InsertAtTail(4, 2);
-    B1.InsertAtTail(4, 1);
-    B1.InsertAtTail(1, 0);
+    B1.InsertAtTail(2, 2);
+    B1.InsertAtTail(1, 1);
+    B1.InsertAtTail(3, 0);
+    cout << "Polynomial B1: ";
     B1.Display();
-    Polynomial result=A1+B1;
-    result.Display();
+
+    Polynomial sum = A1 + B1;
+    cout << "Result of A1 + B1: ";
+    sum.Display();
+
+    Polynomial difference = A1 - B1;
+    cout << "Result of A1 - B1: ";
+    difference.Display();
+
+    Polynomial product = A1 * B1;
+    cout << "Result of A1 * B1: ";
+    product.Display();
+
     return EXIT_SUCCESS;
 }
