@@ -21,10 +21,10 @@ int Duplicate(int *arr, int size)
 }
 int main()
 {
-#ifndef ONLINE_JUDGE
-    freopen("../input.txt", "r", stdin);
-    freopen("../output.txt", "w", stdout);
-#endif
+// #ifndef ONLINE_JUDGE
+//     freopen("../input.txt", "r", stdin);
+//     freopen("../output.txt", "w", stdout);
+// #endif
     int arr[] = {1,2,3,4,5,6,3};
     int size = sizeof(arr) / sizeof(arr[0]);
     for (int i = 0; i < size; i++)
