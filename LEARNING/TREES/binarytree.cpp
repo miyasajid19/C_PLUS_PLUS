@@ -132,16 +132,47 @@ public:
     {
         displaypostorder(root);
     }
+    void BuildTreeFromLevel()
+    {
+        queue<Node *> q;
+        int value;
+        cout<<"enter the value for root : "<<endl;
+        cin>>value;
+        root=new Node(value);
+        q.push(root);
+        while(not q.empty())
+        {
+            Node* temp=q.front();
+            q.pop();
+            int leftValue;
+            cout<<"enter left value  for "<<temp->value<<endl;
+            cin>>leftValue;
+            if(leftValue!=-1)
+            {
+                temp->left=new Node(leftValue);
+                q.push(temp->left);
+            }
+            int rightValue;
+            cout<<"enter right value  for "<<temp->value<<endl;
+            cin>>rightValue;
+            if(rightValue!=-1)
+            {
+                temp->right=new Node(rightValue);
+                q.push(temp->right);
+            }
+        }
+    }
 };
 
 int main()
 {
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
+// #ifndef ONLINE_JUDGE
+//     freopen("input.txt", "r", stdin);
+//     freopen("output.txt", "w", stdout);
+// #endif
     Tree tree;
-    tree.BuildTree();
+    // tree.BuildTree();
+    tree.BuildTreeFromLevel();
     cout << endl;
     tree.LevelOrderDisplay();
     cout << endl
