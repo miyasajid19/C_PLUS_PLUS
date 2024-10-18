@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <queue>
+#include <stack>
 using namespace std;
 
 class Node
@@ -101,6 +102,87 @@ class Tree
         displaypostorder(temp->right);
         cout << temp->value << " ";
     }
+    void no_of_leafNodes(Node *temp, int &count)
+    {
+        if (temp == nullptr)
+        {
+            return;
+        }
+        no_of_leafNodes(temp->left, count);
+        if (temp->left == nullptr and temp->right == nullptr)
+            count++;
+        no_of_leafNodes(temp->right, count);
+    }
+    // Inorder traversal using iteration
+    void inorderIterative(Node *temp)
+    {
+        stack<Node *> s;
+        Node *current = temp;
+
+        while (current != nullptr || !s.empty())
+        {
+            while (current != nullptr)
+            {
+                s.push(current);
+                current = current->left;
+            }
+
+            current = s.top();
+            s.pop();
+            cout << current->value << " ";
+
+            current = current->right;
+        }
+    }
+    // Preorder traversal using iteration
+    void preorderIterative(Node *temp)
+    {
+        if (temp == nullptr)
+            return;
+
+        stack<Node *> s;
+        s.push(temp);
+
+        while (!s.empty())
+        {
+            Node *current = s.top();
+            s.pop();
+            cout << current->value << " ";
+
+            if (current->right)
+                s.push(current->right);
+            if (current->left)
+                s.push(current->left);
+        }
+    }
+
+    // Postorder traversal using two stacks
+    void postorderIterative(Node *temp)
+    {
+        if (temp == nullptr)
+            return;
+
+        stack<Node *> s1, s2;
+        s1.push(temp);
+
+        while (!s1.empty())
+        {
+            Node *current = s1.top();
+            s1.pop();
+            s2.push(current);
+
+            if (current->left)
+                s1.push(current->left);
+            if (current->right)
+                s1.push(current->right);
+        }
+
+        while (!s2.empty())
+        {
+            cout << s2.top()->value << " ";
+            s2.pop();
+        }
+    }
 
 public:
     Tree()
@@ -132,47 +214,67 @@ public:
     {
         displaypostorder(root);
     }
+    void DisplayInorderIterative()
+    {
+        inorderIterative(root);
+    }
+
+    void DisplayPreorderIterative()
+    {
+        preorderIterative(root);
+    }
+
+    void DisplayPostorderIterative()
+    {
+        postorderIterative(root);
+    }
     void BuildTreeFromLevel()
     {
         queue<Node *> q;
         int value;
-        cout<<"enter the value for root : "<<endl;
-        cin>>value;
-        root=new Node(value);
+        cout << "enter the value for root : " << endl;
+        cin >> value;
+        root = new Node(value);
         q.push(root);
-        while(not q.empty())
+        while (not q.empty())
         {
-            Node* temp=q.front();
+            Node *temp = q.front();
             q.pop();
             int leftValue;
-            cout<<"enter left value  for "<<temp->value<<endl;
-            cin>>leftValue;
-            if(leftValue!=-1)
+            cout << "enter left value  for " << temp->value << endl;
+            cin >> leftValue;
+            if (leftValue != -1)
             {
-                temp->left=new Node(leftValue);
+                temp->left = new Node(leftValue);
                 q.push(temp->left);
             }
             int rightValue;
-            cout<<"enter right value  for "<<temp->value<<endl;
-            cin>>rightValue;
-            if(rightValue!=-1)
+            cout << "enter right value  for " << temp->value << endl;
+            cin >> rightValue;
+            if (rightValue != -1)
             {
-                temp->right=new Node(rightValue);
+                temp->right = new Node(rightValue);
                 q.push(temp->right);
             }
         }
+    }
+    int NoOfLeafNodes()
+    {
+        int count = 0;
+        no_of_leafNodes(root, count);
+        return count;
     }
 };
 
 int main()
 {
-// #ifndef ONLINE_JUDGE
-//     freopen("input.txt", "r", stdin);
-//     freopen("output.txt", "w", stdout);
-// #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
     Tree tree;
-    // tree.BuildTree();
-    tree.BuildTreeFromLevel();
+    tree.BuildTree();
+    // tree.BuildTreeFromLevel();
     cout << endl;
     tree.LevelOrderDisplay();
     cout << endl
@@ -184,5 +286,7 @@ int main()
     cout << endl
          << "Post-order :: " << endl;
     tree.DisplayPostorder();
+    cout << endl;
+    cout << "No. of leaf nodes :: " << tree.NoOfLeafNodes() << endl;
     return EXIT_SUCCESS;
 }
