@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <queue>
 using namespace std;
+
 class Node
 {
 public:
@@ -42,24 +43,29 @@ class Tree
 
         return temp;
     }
+
     void levelOrderTraversal(Node *temp)
     {
+        if (temp == nullptr)
+            return;
+
         queue<Node *> q;
         q.push(temp);
-        q.push(nullptr);
-        while (not q.empty())
+        q.push(nullptr); // To mark the end of a level
+
+        while (!q.empty())
         {
             Node *temp1 = q.front();
             q.pop();
+
             if (temp1 == nullptr)
             {
                 cout << endl;
-                if (not q.empty())
+                if (!q.empty())
                     q.push(nullptr);
             }
             else
             {
-
                 cout << temp1->value << "\t";
                 if (temp1->left)
                     q.push(temp1->left);
@@ -67,6 +73,33 @@ class Tree
                     q.push(temp1->right);
             }
         }
+    }
+
+    void displayinorder(Node *temp)
+    {
+        if (temp == nullptr)
+            return;
+        displayinorder(temp->left);
+        cout << temp->value << " ";
+        displayinorder(temp->right);
+    }
+
+    void displaypreorder(Node *temp)
+    {
+        if (temp == nullptr)
+            return;
+        cout << temp->value << " ";
+        displaypreorder(temp->left);
+        displaypreorder(temp->right);
+    }
+
+    void displaypostorder(Node *temp)
+    {
+        if (temp == nullptr)
+            return;
+        displaypostorder(temp->left);
+        displaypostorder(temp->right);
+        cout << temp->value << " ";
     }
 
 public:
@@ -79,11 +112,28 @@ public:
     {
         root = Build(root);
     }
+
     void LevelOrderDisplay()
     {
         levelOrderTraversal(root);
     }
+
+    void DisplayInorder()
+    {
+        displayinorder(root);
+    }
+
+    void DisplayPreorder()
+    {
+        displaypreorder(root);
+    }
+
+    void DisplayPostorder()
+    {
+        displaypostorder(root);
+    }
 };
+
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -94,5 +144,14 @@ int main()
     tree.BuildTree();
     cout << endl;
     tree.LevelOrderDisplay();
+    cout << endl
+         << "Inorder :: " << endl;
+    tree.DisplayInorder();
+    cout << endl
+         << "Pre-order :: " << endl;
+    tree.DisplayPreorder();
+    cout << endl
+         << "Post-order :: " << endl;
+    tree.DisplayPostorder();
     return EXIT_SUCCESS;
 }
