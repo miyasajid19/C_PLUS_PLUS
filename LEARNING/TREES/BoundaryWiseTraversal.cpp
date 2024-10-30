@@ -93,7 +93,7 @@ class Tree
             Traverse_Left(temp->right, ans);
         }
     }
-    void Traverse_left(Node *temp, vector<int> &ans)
+    void Traverse_Leaf(Node *temp, vector<int> &ans)
     {
         if (temp == nullptr)
             return;
@@ -101,8 +101,8 @@ class Tree
         if (temp->left == nullptr and temp->right == nullptr)
             ans.push_back(temp->value);
 
-        Traverse_left(temp->left, ans);
-        Traverse_left(temp->right, ans);
+        Traverse_Leaf(temp->left, ans);
+        Traverse_Leaf(temp->right, ans);
     }
     void Traverse_Right(Node *temp, vector<int> &ans)
     {
@@ -130,8 +130,8 @@ class Tree
         Traverse_Left(temp->left, ans);
 
         // traverse left node
-        Traverse_left(temp->left, ans);
-        Traverse_left(temp->right, ans);
+        Traverse_Leaf(temp->left, ans);
+        Traverse_Leaf(temp->right, ans);
 
         // traverse reverse wise right node
         Traverse_Right(temp->right, ans);
