@@ -327,14 +327,13 @@ class Tree
                 // insertion
                 int index = is_leftToRight ? i : size - 1 - i;
                 ans[index] = FrontNode->value;
-                if(FrontNode->left)
+                if (FrontNode->left)
                     Queue.push(FrontNode->left);
-                if(FrontNode->right)
+                if (FrontNode->right)
                     Queue.push(FrontNode->right);
             }
             // change the direction
             is_leftToRight = !is_leftToRight;
-
 
             for (auto i : ans)
             {
@@ -342,6 +341,68 @@ class Tree
             }
         }
         return result;
+    }
+    // boundary wise traversal
+    void Traverse_Left(Node *temp, vector<int> &ans)
+    {
+        if ((temp == nullptr) or ((temp->left == nullptr) and (temp->right == nullptr)))
+            return;
+
+        ans.push_back(temp->value);
+        if (temp->left)
+        {
+            Traverse_Left(temp->left, ans);
+        }
+        if (temp->right)
+        {
+            Traverse_Left(temp->right, ans);
+        }
+    }
+    void Traverse_Leaf(Node *temp, vector<int> &ans)
+    {
+        if (temp == nullptr)
+            return;
+
+        if (temp->left == nullptr and temp->right == nullptr)
+            ans.push_back(temp->value);
+
+        Traverse_Leaf(temp->left, ans);
+        Traverse_Leaf(temp->right, ans);
+    }
+    void Traverse_Right(Node *temp, vector<int> &ans)
+    {
+        if ((temp == nullptr) or ((temp->left == nullptr) and (temp->right == nullptr)))
+        {
+            return;
+        }
+        if (temp->right)
+        {
+            Traverse_Right(temp->right, ans);
+        }
+        else
+        {
+            Traverse_Right(temp->left, ans);
+        }
+        ans.push_back(temp->value);
+    }
+    vector<int> boundary_wise_traversal(Node *temp)
+    {
+        vector<int> ans;
+        if (temp == nullptr)
+            return ans;
+        ans.push_back(temp->value);
+        // traverse left nodes
+        Traverse_Left(temp->left, ans);
+
+        
+        // traverse leaf node
+        Traverse_Leaf(temp->left, ans);
+        Traverse_Leaf(temp->right, ans);
+
+        // traverse reverse wise right node
+        Traverse_Right(temp->right, ans);
+
+        return ans;
     }
 
 public:
@@ -450,13 +511,19 @@ public:
     }
     void ZigZagTraversal()
     {
-        vector<int>result=zig_zag_traversal(root);
-        for (auto  i :result)
+        vector<int> result = zig_zag_traversal(root);
+        for (auto i : result)
         {
 
-            cout<<i<<" ";
+            cout << i << " ";
         }
-            cout<<endl;
+        cout << endl;
+    }
+    void BoundaryWiseTraversal()
+    {
+        vector<int> result = boundary_wise_traversal(root);
+        for (auto x : result)
+            cout << x << " ";
     }
 };
 
@@ -498,8 +565,11 @@ int main()
     cout << "Is balanced (optimized)?? :: " << tree.isBalanced_Optimized() << endl;
     cout << "Diameter of tree :: " << tree.Diameter() << endl;
     cout << "Optimized Diameter of tree :: " << tree.oprimizedDiameter() << endl;
-    cout<<"Zig Zag Traversal ::: ";
+    cout << "Zig Zag Traversal ::: ";
     tree.ZigZagTraversal();
+    cout << "Boundary wise Traversal ::: ";
+    tree.BoundaryWiseTraversal();
+    cout << endl;
     return EXIT_SUCCESS;
 }
 // 1
