@@ -75,7 +75,6 @@ class Tree
         }
     }
 
-
 public:
     Tree()
     {
@@ -91,8 +90,6 @@ public:
     {
         levelOrderTraversal(root);
     }
-
-    
 };
 
 int main()
@@ -106,5 +103,5 @@ int main()
     cout << endl;
     tree.LevelOrderDisplay();
     cout << endl;
-   return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
