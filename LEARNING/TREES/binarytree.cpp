@@ -594,6 +594,29 @@ class Tree
 
         return MaxSum;
     }
+    // Function to find the lowest common ancestor (LCA) of two nodes in a binary tree
+    Node *lowest_common_ancestor(Node *temp, int n1, int n2)
+    {
+        if (temp == nullptr)
+        {
+            return nullptr;
+        }
+
+        // If current node is one of the nodes we're looking for, return it
+        if (temp->value == n1 || temp->value == n2)
+            return temp;
+
+        // Recur for left and right subtrees
+        Node *leftAns = lowest_common_ancestor(temp->left, n1, n2);
+        Node *rightAns = lowest_common_ancestor(temp->right, n1, n2);
+
+        // If both left and right subtrees return non-null, current node is the LCA
+        if (leftAns != nullptr && rightAns != nullptr)
+            return temp;
+
+        // Otherwise, return the non-null answer
+        return (leftAns != nullptr) ? leftAns : rightAns;
+    }
 
 public:
     Tree()
@@ -749,14 +772,19 @@ public:
     {
         return longest_bloodline_sum(root);
     }
+
+    Node *LowestCommonAncestor(int n1, int n2)
+    {
+        return lowest_common_ancestor(root, n1, n2);
+    }
 };
 
 int main()
 {
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
+    #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+    #endif
     cout << boolalpha;
     Tree tree;
     tree.BuildTree();
@@ -809,7 +837,11 @@ int main()
     cout << "Right View ::: ";
     tree.RightView();
     cout << endl;
-    cout<<"The Sum Of Maximum bloodline is "<<tree.Sum_Bloodline()<<endl;
+    cout << "The Sum Of Maximum bloodline is " << tree.Sum_Bloodline() << endl;
+    cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 3)->value << endl;
+    cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 4)->value << endl;
+    cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 6)->value << endl;
+    cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(5, 7)->value << endl;
     return EXIT_SUCCESS;
 }
 // 1
