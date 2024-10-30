@@ -446,42 +446,77 @@ class Tree
 
     // Top View
     vector<int> topview(Node *temp)
-{
-    vector<int> ans;
-    if (temp == nullptr)
-        return ans;
-
-    map<int, int> TopNode;
-    queue<pair<Node *, int>> Queue;
-
-    Queue.push(make_pair(temp, 0));
-
-    while (!Queue.empty())
     {
-        pair<Node *, int> temp1 = Queue.front();
-        Queue.pop();  // Remove the front element after processing
-        Node *FrontNode = temp1.first;
-        int horizontalDistance = temp1.second;
+        vector<int> ans;
+        if (temp == nullptr)
+            return ans;
 
-        if (TopNode.find(horizontalDistance) == TopNode.end())
+        map<int, int> TopNode;
+        queue<pair<Node *, int>> Queue;
+
+        Queue.push(make_pair(temp, 0));
+
+        while (!Queue.empty())
         {
-            TopNode[horizontalDistance] = FrontNode->value;
+            pair<Node *, int> temp1 = Queue.front();
+            Queue.pop(); // Remove the front element after processing
+            Node *FrontNode = temp1.first;
+            int horizontalDistance = temp1.second;
+
+            if (TopNode.find(horizontalDistance) == TopNode.end())
+            {
+                TopNode[horizontalDistance] = FrontNode->value;
+            }
+
+            if (FrontNode->left)
+                Queue.push(make_pair(FrontNode->left, horizontalDistance - 1));
+
+            if (FrontNode->right)
+                Queue.push(make_pair(FrontNode->right, horizontalDistance + 1));
         }
 
-        if (FrontNode->left)
-            Queue.push(make_pair(FrontNode->left, horizontalDistance - 1));
+        for (auto x : TopNode)
+        {
+            ans.push_back(x.second);
+        }
 
-        if (FrontNode->right)
-            Queue.push(make_pair(FrontNode->right, horizontalDistance + 1));
+        return ans;
     }
 
-    for (auto x : TopNode)
+    // bottom View
+    vector<int> bottomview(Node *temp)
     {
-        ans.push_back(x.second);
-    }
+        vector<int> ans;
+        if (temp == nullptr)
+            return ans;
 
-    return ans;
-}
+        map<int, int> TopNode;
+        queue<pair<Node *, int>> Queue;
+
+        Queue.push(make_pair(temp, 0));
+
+        while (!Queue.empty())
+        {
+            pair<Node *, int> temp1 = Queue.front();
+            Queue.pop(); // Remove the front element after processing
+            Node *FrontNode = temp1.first;
+            int horizontalDistance = temp1.second;
+            TopNode[horizontalDistance] = FrontNode->value;
+
+            if (FrontNode->left)
+                Queue.push(make_pair(FrontNode->left, horizontalDistance - 1));
+
+            if (FrontNode->right)
+                Queue.push(make_pair(FrontNode->right, horizontalDistance + 1));
+        }
+
+        for (auto x : TopNode)
+        {
+            ans.push_back(x.second);
+        }
+
+        return ans;
+    }
 
 public:
     Tree()
@@ -615,7 +650,12 @@ public:
         for (auto x : result)
             cout << x << " ";
     }
-
+    void BottomView()
+    {
+        vector<int> result = bottomview(root);
+        for (auto x : result)
+            cout << x << " ";
+    }
 };
 
 int main()
@@ -666,6 +706,9 @@ int main()
     cout << endl;
     cout << "Top View ::: ";
     tree.TopView();
+    cout << endl;
+    cout << "Bottom View ::: ";
+    tree.BottomView();
     cout << endl;
     return EXIT_SUCCESS;
 }
