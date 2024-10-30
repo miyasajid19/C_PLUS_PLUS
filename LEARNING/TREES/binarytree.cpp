@@ -444,6 +444,45 @@ class Tree
         return ans;
     }
 
+    // Top View
+    vector<int> topview(Node *temp)
+{
+    vector<int> ans;
+    if (temp == nullptr)
+        return ans;
+
+    map<int, int> TopNode;
+    queue<pair<Node *, int>> Queue;
+
+    Queue.push(make_pair(temp, 0));
+
+    while (!Queue.empty())
+    {
+        pair<Node *, int> temp1 = Queue.front();
+        Queue.pop();  // Remove the front element after processing
+        Node *FrontNode = temp1.first;
+        int horizontalDistance = temp1.second;
+
+        if (TopNode.find(horizontalDistance) == TopNode.end())
+        {
+            TopNode[horizontalDistance] = FrontNode->value;
+        }
+
+        if (FrontNode->left)
+            Queue.push(make_pair(FrontNode->left, horizontalDistance - 1));
+
+        if (FrontNode->right)
+            Queue.push(make_pair(FrontNode->right, horizontalDistance + 1));
+    }
+
+    for (auto x : TopNode)
+    {
+        ans.push_back(x.second);
+    }
+
+    return ans;
+}
+
 public:
     Tree()
     {
@@ -570,6 +609,13 @@ public:
         for (auto x : result)
             cout << x << " ";
     }
+    void TopView()
+    {
+        vector<int> result = topview(root);
+        for (auto x : result)
+            cout << x << " ";
+    }
+
 };
 
 int main()
@@ -615,8 +661,11 @@ int main()
     cout << "Boundary wise Traversal ::: ";
     tree.BoundaryWiseTraversal();
     cout << endl;
-    cout << "Vertival Order Traversal ::: ";
+    cout << "Vertical Order Traversal ::: ";
     tree.VertivalOrderTraversal();
+    cout << endl;
+    cout << "Top View ::: ";
+    tree.TopView();
     cout << endl;
     return EXIT_SUCCESS;
 }
