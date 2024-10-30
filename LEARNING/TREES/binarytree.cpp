@@ -564,6 +564,37 @@ class Tree
         return ans;
     }
 
+    // sum of the longest bloodline in the tree
+    void solveBloodline(Node *temp, int sum, int &MaxSum, int len, int maxlen)
+    {
+        if (temp == nullptr)
+        {
+            if (len > maxlen)
+            {
+                maxlen = len;
+                MaxSum = sum;
+            }
+            else if (len == maxlen)
+            {
+                MaxSum = max(sum, MaxSum);
+            }
+            return;
+        }
+        sum += temp->value;
+        solveBloodline(temp->left, sum, MaxSum, len + 1, maxlen);
+        solveBloodline(temp->right, sum, MaxSum, len + 1, maxlen);
+    }
+    int longest_bloodline_sum(Node *temp)
+    {
+        int len = 0;
+        int maxlen = 0;
+        int sum = 0;
+        int MaxSum = INT_MIN;
+        solveBloodline(temp, sum, MaxSum, len, maxlen);
+
+        return MaxSum;
+    }
+
 public:
     Tree()
     {
@@ -714,6 +745,10 @@ public:
         for (auto x : result)
             cout << x << " ";
     }
+    int Sum_Bloodline()
+    {
+        return longest_bloodline_sum(root);
+    }
 };
 
 int main()
@@ -774,6 +809,7 @@ int main()
     cout << "Right View ::: ";
     tree.RightView();
     cout << endl;
+    cout<<"The Sum Of Maximum bloodline is "<<tree.Sum_Bloodline()<<endl;
     return EXIT_SUCCESS;
 }
 // 1
