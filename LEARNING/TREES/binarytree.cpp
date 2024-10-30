@@ -3,6 +3,7 @@
 #include <queue>
 #include <stack>
 #include <vector>
+#include <map>
 using namespace std;
 
 class Node
@@ -394,7 +395,6 @@ class Tree
         // traverse left nodes
         Traverse_Left(temp->left, ans);
 
-        
         // traverse leaf node
         Traverse_Leaf(temp->left, ans);
         Traverse_Leaf(temp->right, ans);
@@ -402,6 +402,45 @@ class Tree
         // traverse reverse wise right node
         Traverse_Right(temp->right, ans);
 
+        return ans;
+    }
+
+    // vertical order traversal
+    vector<int> vertical_order_traversal(Node *temp)
+    {
+        map<int, map<int, vector<int>>> nodes;
+        queue<pair<Node *, pair<int, int>>> Queue;
+        vector<int> ans;
+        if (temp == nullptr)
+            return ans;
+
+        Queue.push(make_pair(temp, make_pair(0, 0)));
+
+        while (not Queue.empty())
+        {
+            pair<Node *, pair<int, int>> temp1 = Queue.front();
+            Queue.pop();
+            Node *FrontNode = temp1.first;
+            int horizontalDistance = temp1.second.first;
+            int level = temp1.second.second;
+            nodes[horizontalDistance][level].push_back(FrontNode->value);
+
+            if (FrontNode->left)
+                Queue.push(make_pair(FrontNode->left, make_pair(horizontalDistance - 1, level + 1)));
+
+            if (FrontNode->right)
+                Queue.push(make_pair(FrontNode->right, make_pair(horizontalDistance + 1, level + 1)));
+        }
+        for (auto x : nodes)
+        {
+            for (auto y : x.second)
+            {
+                for (auto x : y.second)
+                {
+                    ans.push_back(x);
+                }
+            }
+        }
         return ans;
     }
 
@@ -525,6 +564,12 @@ public:
         for (auto x : result)
             cout << x << " ";
     }
+    void VertivalOrderTraversal()
+    {
+        vector<int> result = vertical_order_traversal(root);
+        for (auto x : result)
+            cout << x << " ";
+    }
 };
 
 int main()
@@ -569,6 +614,9 @@ int main()
     tree.ZigZagTraversal();
     cout << "Boundary wise Traversal ::: ";
     tree.BoundaryWiseTraversal();
+    cout << endl;
+    cout << "Vertival Order Traversal ::: ";
+    tree.VertivalOrderTraversal();
     cout << endl;
     return EXIT_SUCCESS;
 }
