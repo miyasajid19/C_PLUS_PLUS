@@ -517,6 +517,28 @@ class Tree
 
         return ans;
     }
+// Function to return the list of the elements of the left view of the binary tree
+void solve(Node* temp, vector<int>& ans, int level)
+{
+    // Base case
+    if (temp == nullptr)
+        return;
+
+    // If we enter a new level
+    if (level == ans.size())
+        ans.push_back(temp->value);
+
+    // Recursively call for left and right subtrees
+    solve(temp->left, ans, level + 1);
+    solve(temp->right, ans, level + 1);
+}
+
+vector<int> leftview(Node* temp)
+{
+    vector<int> ans;
+    solve(temp, ans, 0);
+    return ans;
+}
 
 public:
     Tree()
@@ -656,6 +678,12 @@ public:
         for (auto x : result)
             cout << x << " ";
     }
+    void LeftView()
+    {
+        vector<int> result = leftview(root);
+        for (auto x : result)
+            cout << x << " ";
+    }
 };
 
 int main()
@@ -709,6 +737,9 @@ int main()
     cout << endl;
     cout << "Bottom View ::: ";
     tree.BottomView();
+    cout << endl;
+    cout << "Left View ::: ";
+    tree.LeftView();
     cout << endl;
     return EXIT_SUCCESS;
 }
