@@ -517,28 +517,52 @@ class Tree
 
         return ans;
     }
-// Function to return the list of the elements of the left view of the binary tree
-void solve(Node* temp, vector<int>& ans, int level)
-{
-    // Base case
-    if (temp == nullptr)
-        return;
+    // left view
+    // Function to return the list of the elements of the left view of the binary tree
+    void solveleft(Node *temp, vector<int> &ans, int level)
+    {
+        // Base case
+        if (temp == nullptr)
+            return;
 
-    // If we enter a new level
-    if (level == ans.size())
-        ans.push_back(temp->value);
+        // If we enter a new level
+        if (level == ans.size())
+            ans.push_back(temp->value);
 
-    // Recursively call for left and right subtrees
-    solve(temp->left, ans, level + 1);
-    solve(temp->right, ans, level + 1);
-}
+        // Recursively call for left and right subtrees
+        solveleft(temp->left, ans, level + 1);
+        solveleft(temp->right, ans, level + 1);
+    }
 
-vector<int> leftview(Node* temp)
-{
-    vector<int> ans;
-    solve(temp, ans, 0);
-    return ans;
-}
+    vector<int> leftview(Node *temp)
+    {
+        vector<int> ans;
+        solveleft(temp, ans, 0);
+        return ans;
+    }
+    // right view
+    //  Function to return the list of the elements of the left view of the binary tree
+    void solveright(Node *temp, vector<int> &ans, int level)
+    {
+        // Base case
+        if (temp == nullptr)
+            return;
+
+        // If we enter a new level
+        if (level == ans.size())
+            ans.push_back(temp->value);
+
+        // Recursively call for left and right subtrees
+        solveright(temp->right, ans, level + 1);
+        solveright(temp->left, ans, level + 1);
+    }
+
+    vector<int> rightview(Node *temp)
+    {
+        vector<int> ans;
+        solveright(temp, ans, 0);
+        return ans;
+    }
 
 public:
     Tree()
@@ -684,6 +708,12 @@ public:
         for (auto x : result)
             cout << x << " ";
     }
+    void RightView()
+    {
+        vector<int> result = rightview(root);
+        for (auto x : result)
+            cout << x << " ";
+    }
 };
 
 int main()
@@ -740,6 +770,9 @@ int main()
     cout << endl;
     cout << "Left View ::: ";
     tree.LeftView();
+    cout << endl;
+    cout << "Right View ::: ";
+    tree.RightView();
     cout << endl;
     return EXIT_SUCCESS;
 }
