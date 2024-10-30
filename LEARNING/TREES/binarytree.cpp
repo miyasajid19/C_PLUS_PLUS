@@ -735,6 +735,24 @@ class Tree
         Node *ans = pre_in_order(inorder, preorder, preOrderIndex, 0, size - 1, size);
         return ans;
     }
+    Node *buildTreeFromInPost(int inorder[], int postorder[], int &postIndex, int inStart, int inEnd, int size)
+    {
+        // Base case
+        if (postIndex < 0 || inStart > inEnd)
+        {
+            return nullptr;
+        }
+
+        int element = postorder[postIndex--]; // Last element in postorder is the root
+        Node *temp = new Node(element);
+        int position = findPosition(inorder, element, size);
+
+        // Recur for right and left subtrees (postorder is Right->Left)
+        temp->right = buildTreeFromInPost(inorder, postorder, postIndex, position + 1, inEnd, size);
+        temp->left = buildTreeFromInPost(inorder, postorder, postIndex, inStart, position - 1, size);
+
+        return temp;
+    }
 
 public:
     Tree()
@@ -922,6 +940,11 @@ public:
         int preOrderIndex = 0;
         root = pre_in_order(inorder, preorder, preOrderIndex, 0, size - 1, size);
     }
+    void buildTree_from_inorder_postorder(int inorder[], int postorder[], int size)
+    {
+        int postIndex = size - 1; // Start from the end of postorder
+        root = buildTreeFromInPost(inorder, postorder, postIndex, 0, size - 1, size);
+    }
 };
 
 int main()
@@ -995,10 +1018,15 @@ int main()
     int inorder[] = {4, 2, 5, 1, 6, 3, 7};
     int preorder[] = {1, 2, 4, 5, 3, 6, 7};
     int postorder[] = {4, 5, 2, 6, 7, 3, 1};
-    
+
     Tree in_pre;
-    in_pre.BuildTree_from_inorder_preorder(inorder,preorder,7);
+    in_pre.BuildTree_from_inorder_preorder(inorder, preorder, 7);
     in_pre.LevelOrderDisplay();
+
+
+    Tree in_post;
+    in_post.buildTree_from_inorder_postorder(inorder,postorder,7);
+    in_post.LevelOrderDisplay();
     return EXIT_SUCCESS;
 }
 // 1
