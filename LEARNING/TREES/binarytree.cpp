@@ -618,6 +618,34 @@ class Tree
         return (leftAns != nullptr) ? leftAns : rightAns;
     }
 
+    // k sum
+    void k_sum(Node *temp, int k, int &count, vector<int> path)
+    {
+        if (temp == nullptr)
+            return;
+        
+        path.push_back(temp->value);
+
+        //left
+        k_sum(temp->left,k,count,path);
+
+        //right
+        k_sum(temp->right,k,count,path);
+
+        //checking K sum
+        int size=path.size();
+        int sum=0;
+        for (int i =size-1;i>=1;i--)
+        {
+            sum+=path[i];
+            if(sum==k)
+            {
+                count++;
+            }
+        }
+        path.pop_back();
+    }
+
 public:
     Tree()
     {
@@ -777,14 +805,21 @@ public:
     {
         return lowest_common_ancestor(root, n1, n2);
     }
+    int K_Sum(int k)
+    {
+        int count=0;
+        vector<int> path;
+        k_sum(root,k,count,path);
+        return count;
+    }
 };
 
 int main()
 {
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
-    #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
     cout << boolalpha;
     Tree tree;
     tree.BuildTree();
@@ -842,6 +877,9 @@ int main()
     cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 4)->value << endl;
     cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 6)->value << endl;
     cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(5, 7)->value << endl;
+    cout<<"There are "<< tree.K_Sum (5)<<" ways to get the sum 5 in the tree"<<endl;
+    cout<<"There are "<< tree.K_Sum (12)<<" ways to get the sum 12 in the tree"<<endl;
+    cout<<"There are "<< tree.K_Sum (7)<<" ways to get the sum 7 in the tree"<<endl;
     return EXIT_SUCCESS;
 }
 // 1
