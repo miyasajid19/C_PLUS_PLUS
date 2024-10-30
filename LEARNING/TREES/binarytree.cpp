@@ -623,28 +623,84 @@ class Tree
     {
         if (temp == nullptr)
             return;
-        
+
         path.push_back(temp->value);
 
-        //left
-        k_sum(temp->left,k,count,path);
+        // left
+        k_sum(temp->left, k, count, path);
 
-        //right
-        k_sum(temp->right,k,count,path);
+        // right
+        k_sum(temp->right, k, count, path);
 
-        //checking K sum
-        int size=path.size();
-        int sum=0;
-        for (int i =size-1;i>=1;i--)
+        // checking K sum
+        int size = path.size();
+        int sum = 0;
+        for (int i = size - 1; i >= 1; i--)
         {
-            sum+=path[i];
-            if(sum==k)
+            sum += path[i];
+            if (sum == k)
             {
                 count++;
             }
         }
         path.pop_back();
     }
+
+    // Kth nearest neighbour
+    Node *find_kth_node(Node *temp, int &k, int nodeValue)
+    {
+        // base case
+        if (temp == nullptr)
+        {
+            return nullptr;
+        }
+        if (temp->value == nodeValue)
+        {
+            return temp;
+        }
+        Node *leftAns = find_kth_node(temp->left, k, nodeValue);
+        Node *rightAns = find_kth_node(temp->right, k, nodeValue);
+
+        if (leftAns != nullptr and rightAns == nullptr)
+        {
+            k--;
+            if (k <= 0)
+            {
+                k = INT_MAX;
+                return temp;
+            }
+            return leftAns;
+        }
+
+        if (leftAns == nullptr and rightAns != nullptr)
+        {
+            k--;
+            if (k <= 0)
+            {
+                k = INT_MAX;
+                return temp;
+            }
+            return rightAns;
+        }
+        return nullptr;
+    }
+
+    // sum of non adjacent nodes
+    pair<int, int> sum_nonAdjacent(Node *temp)
+    {
+        if (temp == nullptr)
+        {
+            return make_pair(0, 0);
+        }
+        pair<int, int> leftAns = sum_nonAdjacent(temp->left);
+        pair<int, int> rightAns = sum_nonAdjacent(temp->right);
+
+        pair<int, int> result;
+        result.first = temp->value + leftAns.second + rightAns.second;
+        result.second = max(leftAns.first, leftAns.second) + max(rightAns.first, rightAns.second);
+        return result;
+    }
+
 
 public:
     Tree()
@@ -807,10 +863,24 @@ public:
     }
     int K_Sum(int k)
     {
-        int count=0;
+        int count = 0;
         vector<int> path;
-        k_sum(root,k,count,path);
+        k_sum(root, k, count, path);
         return count;
+    }
+    int Kth_Node(int k, int nodeValue)
+    {
+        Node *ans = find_kth_node(root, k, nodeValue);
+        if (ans == nullptr)
+            return -1;
+        else
+            return ans->value;
+    }
+
+    int Non_Adjacent_sum()
+    {
+        pair<int, int> ans = sum_nonAdjacent(root);
+        return max(ans.first, ans.second);
     }
 };
 
@@ -877,9 +947,11 @@ int main()
     cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 4)->value << endl;
     cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(2, 6)->value << endl;
     cout << "The lowest common ancestor  is " << tree.LowestCommonAncestor(5, 7)->value << endl;
-    cout<<"There are "<< tree.K_Sum (5)<<" ways to get the sum 5 in the tree"<<endl;
-    cout<<"There are "<< tree.K_Sum (12)<<" ways to get the sum 12 in the tree"<<endl;
-    cout<<"There are "<< tree.K_Sum (7)<<" ways to get the sum 7 in the tree"<<endl;
+    cout << "There are " << tree.K_Sum(5) << " ways to get the sum 5 in the tree" << endl;
+    cout << "There are " << tree.K_Sum(12) << " ways to get the sum 12 in the tree" << endl;
+    cout << "There are " << tree.K_Sum(7) << " ways to get the sum 7 in the tree" << endl;
+    cout << "the 2nd  neighbour of the node 3 is " << tree.Kth_Node(2, 3) << endl;
+    cout<<"the Maximum non-adjacent sum of the tree is "<<tree.Non_Adjacent_sum()<<endl;
     return EXIT_SUCCESS;
 }
 // 1
