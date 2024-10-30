@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <queue>
 #include <stack>
+#include <vector>
 using namespace std;
 
 class Node
@@ -113,6 +114,7 @@ class Tree
             count++;
         no_of_leafNodes(temp->right, count);
     }
+
     // Inorder traversal using iteration
     void inorderIterative(Node *temp)
     {
@@ -121,19 +123,23 @@ class Tree
 
         while (current != nullptr || !s.empty())
         {
+            // Traverse left subtree as deep as possible
             while (current != nullptr)
             {
                 s.push(current);
                 current = current->left;
             }
 
+            // Pop the node and process it
             current = s.top();
             s.pop();
             cout << current->value << " ";
 
+            // Visit the right subtree
             current = current->right;
         }
     }
+
     // Preorder traversal using iteration
     void preorderIterative(Node *temp)
     {
@@ -149,6 +155,7 @@ class Tree
             s.pop();
             cout << current->value << " ";
 
+            // Push right child first so that left is processed first
             if (current->right)
                 s.push(current->right);
             if (current->left)
@@ -156,32 +163,185 @@ class Tree
         }
     }
 
-    // Postorder traversal using two stacks
+    // Postorder traversal using one stack
     void postorderIterative(Node *temp)
     {
         if (temp == nullptr)
             return;
 
-        stack<Node *> s1, s2;
-        s1.push(temp);
+        stack<Node *> s;
+        Node *current = temp;
+        Node *lastVisited = nullptr;
 
-        while (!s1.empty())
+        while (current != nullptr || !s.empty())
         {
-            Node *current = s1.top();
-            s1.pop();
-            s2.push(current);
+            // Traverse to the leftmost node
+            if (current != nullptr)
+            {
+                s.push(current);
+                current = current->left;
+            }
+            else
+            {
+                Node *peekNode = s.top();
 
-            if (current->left)
-                s1.push(current->left);
-            if (current->right)
-                s1.push(current->right);
+                // If the right subtree exists and was not visited yet
+                if (peekNode->right != nullptr && lastVisited != peekNode->right)
+                {
+                    current = peekNode->right;
+                }
+                else
+                {
+                    // Visit the node
+                    cout << peekNode->value << " ";
+                    lastVisited = s.top();
+                    s.pop();
+                }
+            }
         }
+    }
+    int height(Node *temp)
+    {
+        if (temp == nullptr)
+            return 0;
 
-        while (!s2.empty())
+        return max(height(temp->left), height(temp->right)) + 1;
+    }
+    int diameter(Node *temp)
+    {
+        if (temp == nullptr)
+            return 0;
+        int op1 = diameter(temp->left);
+        int op2 = diameter(temp->right);
+        int op3 = height(temp->left) + height(temp->right) + 1;
+        return max(op1, max(op2, op3));
+    }
+    pair<int, int> optimized_diameter(Node *temp)
+    {
+        if (temp == nullptr)
+            return make_pair(0, 0);
+        pair<int, int> left = optimized_diameter(temp->left);
+        pair<int, int> right = optimized_diameter(temp->right);
+
+        int op1 = left.first;
+        int op2 = right.first;
+        int op3 = left.second + right.second + 1;
+        return make_pair(max(op1, max(op2, op3)), max(left.second, right.second) + 1);
+    }
+    bool is_balanced(Node *temp)
+    {
+        // A null tree is balanced
+        if (temp == nullptr)
+            return true;
+
+        // Get the height of the left and right subtrees
+        int leftHeight = height(temp->left);
+        int rightHeight = height(temp->right);
+
+        // Check if the height difference is more than 1
+        if (abs(leftHeight - rightHeight) > 1)
+            return false;
+
+        // Recursively check for left and right subtrees
+        bool leftBalanced = is_balanced(temp->left);
+        bool rightBalanced = is_balanced(temp->right);
+
+        // If both left and right subtrees are balanced, then the tree is balanced
+        return leftBalanced && rightBalanced;
+    }
+    pair<bool, int> is_balanced_optimezed(Node *temp)
+    {
+        // A null tree is balanced with height 0
+        if (temp == nullptr)
+            return make_pair(true, 0);
+
+        // Check the left and right subtrees
+        pair<bool, int> left = is_balanced_optimezed(temp->left);
+        pair<bool, int> right = is_balanced_optimezed(temp->right);
+
+        // Get the balanced status and height for both subtrees
+        bool leftBalanced = left.first;
+        bool rightBalanced = right.first;
+
+        // Calculate the height difference
+        int diff_height = abs(left.second - right.second);
+
+        // If the height difference is more than 1, the tree is not balanced
+        bool currentBalanced = (diff_height <= 1);
+
+        // The current tree is balanced if both subtrees are balanced and the height difference is <= 1
+        bool isBalanced = leftBalanced && rightBalanced && currentBalanced;
+
+        // Height of the current node is the maximum of the two subtree heights plus 1
+        int height = max(left.second, right.second) + 1;
+
+        return make_pair(isBalanced, height);
+    }
+    pair<bool, int> is_sum_tree(Node *temp)
+    {
+        if (temp == nullptr)
         {
-            cout << s2.top()->value << " ";
-            s2.pop();
+            return make_pair(true, 0);
         }
+        if (temp->left == nullptr and temp->right == nullptr)
+        {
+            return make_pair(true, temp->value);
+        }
+        pair<bool, int> leftAns = is_sum_tree(temp->left);
+        pair<bool, int> rightAns = is_sum_tree(temp->right);
+        bool isleftSumTree = leftAns.first;
+        bool isrightSumTree = rightAns.first;
+        bool condition = temp->value == leftAns.second + rightAns.second;
+        pair<bool, int> ans;
+        if (isleftSumTree and isrightSumTree and condition)
+        {
+            ans.first = true;
+            // ans.second=2*temp->value;
+            ans.second = leftAns.second + rightAns.second + temp->value;
+        }
+        else
+        {
+            ans.first = false;
+        }
+        return ans;
+    }
+    vector<int> zig_zag_traversal(Node *temp)
+    {
+        vector<int> result;
+        if (temp == nullptr)
+            return result;
+
+        queue<Node *> Queue;
+        Queue.push(temp);
+
+        bool is_leftToRight = true;
+        while (not Queue.empty())
+        {
+            int size = Queue.size();
+            vector<int> ans(size);
+            for (int i = 0; i < size; i++)
+            {
+                Node *FrontNode = Queue.front();
+                Queue.pop();
+
+                // insertion
+                int index = is_leftToRight ? i : size - 1 - i;
+                ans[index] = FrontNode->value;
+                if(FrontNode->left)
+                    Queue.push(FrontNode->left);
+                if(FrontNode->right)
+                    Queue.push(FrontNode->right);
+            }
+            // change the direction
+            is_leftToRight = !is_leftToRight;
+
+
+            for (auto i : ans)
+            {
+                result.push_back(i);
+            }
+        }
+        return result;
     }
 
 public:
@@ -264,6 +424,40 @@ public:
         no_of_leafNodes(root, count);
         return count;
     }
+    int Height()
+    {
+        return height(root);
+    }
+    int Diameter()
+    {
+        return diameter(root);
+    }
+    int oprimizedDiameter()
+    {
+        return optimized_diameter(root).first;
+    }
+    bool isBalanced()
+    {
+        return is_balanced(root);
+    }
+    bool isBalanced_Optimized()
+    {
+        return is_balanced_optimezed(root).first;
+    }
+    bool isSumTree()
+    {
+        return is_sum_tree(root).first;
+    }
+    void ZigZagTraversal()
+    {
+        vector<int>result=zig_zag_traversal(root);
+        for (auto  i :result)
+        {
+
+            cout<<i<<" ";
+        }
+            cout<<endl;
+    }
 };
 
 int main()
@@ -272,6 +466,7 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 #endif
+    cout << boolalpha;
     Tree tree;
     tree.BuildTree();
     // tree.BuildTreeFromLevel();
@@ -281,12 +476,44 @@ int main()
          << "Inorder :: " << endl;
     tree.DisplayInorder();
     cout << endl
+         << "Inorder :: " << endl;
+    tree.DisplayInorderIterative();
+    cout << endl
          << "Pre-order :: " << endl;
     tree.DisplayPreorder();
     cout << endl
+         << "Pre-order :: " << endl;
+    tree.DisplayPreorderIterative();
+    cout << endl
          << "Post-order :: " << endl;
     tree.DisplayPostorder();
+    cout << endl
+         << "Post-order :: " << endl;
+    tree.DisplayPostorderIterative();
     cout << endl;
     cout << "No. of leaf nodes :: " << tree.NoOfLeafNodes() << endl;
+    cout << "Height of tree :: " << tree.Height() << endl;
+    cout << "Is balanced?? :: " << tree.isBalanced() << endl;
+    cout << "Is Sum tree?? :: " << tree.isSumTree() << endl;
+    cout << "Is balanced (optimized)?? :: " << tree.isBalanced_Optimized() << endl;
+    cout << "Diameter of tree :: " << tree.Diameter() << endl;
+    cout << "Optimized Diameter of tree :: " << tree.oprimizedDiameter() << endl;
+    cout<<"Zig Zag Traversal ::: ";
+    tree.ZigZagTraversal();
     return EXIT_SUCCESS;
 }
+// 1
+// 2
+// 4
+// -1
+// -1
+// 5
+// -1
+// -1
+// 3
+// 6
+// -1
+// -1
+// 7
+// -1
+// -1
