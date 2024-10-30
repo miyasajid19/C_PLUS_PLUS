@@ -753,6 +753,33 @@ class Tree
 
         return temp;
     }
+    Node* buildTreeFromPrePost(int preorder[], int postorder[], int& preIndex, int postStart, int postEnd, int size) {
+        // Base case
+        if (preIndex >= size || postStart > postEnd) {
+            return nullptr;
+        }
+
+        // Create the root node
+        Node* temp = new Node(preorder[preIndex++]);
+
+        // If the subtree has only one node, return it
+        if (postStart == postEnd || preIndex >= size) {
+            return temp;
+        }
+
+        // Find the index of the next element in the pre-order in the post-order array
+        int nextVal = preorder[preIndex];
+        int postIndex = postStart;
+        while (postIndex <= postEnd && postorder[postIndex] != nextVal) {
+            postIndex++;
+        }
+
+        // Recursively build the left and right subtrees
+        temp->left = buildTreeFromPrePost(preorder, postorder, preIndex, postStart, postIndex, size);
+        temp->right = buildTreeFromPrePost(preorder, postorder, preIndex, postIndex + 1, postEnd - 1, size);
+
+        return temp;
+    }
 
 public:
     Tree()
@@ -945,6 +972,10 @@ public:
         int postIndex = size - 1; // Start from the end of postorder
         root = buildTreeFromInPost(inorder, postorder, postIndex, 0, size - 1, size);
     }
+    void buildTree_from_Preorder_Postorder(int preorder[], int postorder[], int size) {
+        int preIndex = 0;  // Start index for preorder traversal
+        root = buildTreeFromPrePost(preorder, postorder, preIndex, 0, size - 1, size);
+    }
 };
 
 int main()
@@ -1027,6 +1058,10 @@ int main()
     Tree in_post;
     in_post.buildTree_from_inorder_postorder(inorder,postorder,7);
     in_post.LevelOrderDisplay();
+
+    Tree pre_post;
+    pre_post.buildTree_from_Preorder_Postorder(preorder,postorder,7);
+    pre_post.LevelOrderDisplay();
     return EXIT_SUCCESS;
 }
 // 1
