@@ -700,7 +700,41 @@ class Tree
         result.second = max(leftAns.first, leftAns.second) + max(rightAns.first, rightAns.second);
         return result;
     }
+    int findPosition(int inorder[], int element, int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (inorder[i] == element)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
+    // Build tree from inorder and preorder
+    Node *pre_in_order(int inorder[], int preorder[], int &index, int inorderStart, int inorderEnd, int size)
+    {
+        if (index >= size || inorderStart > inorderEnd)
+        {
+            return nullptr;
+        }
+        int element = preorder[index++];
+        Node *temp = new Node(element);
+        int position = findPosition(inorder, element, size);
+
+        temp->left = pre_in_order(inorder, preorder, index, inorderStart, position - 1, size);
+        temp->right = pre_in_order(inorder, preorder, index, position + 1, inorderEnd, size);
+
+        return temp;
+    }
+
+    Node *built_from_inorder_preorder(int inorder[], int preorder[], int size)
+    {
+        int preOrderIndex = 0;
+        Node *ans = pre_in_order(inorder, preorder, preOrderIndex, 0, size - 1, size);
+        return ans;
+    }
 
 public:
     Tree()
@@ -882,6 +916,12 @@ public:
         pair<int, int> ans = sum_nonAdjacent(root);
         return max(ans.first, ans.second);
     }
+
+    void BuildTree_from_inorder_preorder(int inorder[], int preorder[], int size)
+    {
+        int preOrderIndex = 0;
+        root = pre_in_order(inorder, preorder, preOrderIndex, 0, size - 1, size);
+    }
 };
 
 int main()
@@ -951,12 +991,19 @@ int main()
     cout << "There are " << tree.K_Sum(12) << " ways to get the sum 12 in the tree" << endl;
     cout << "There are " << tree.K_Sum(7) << " ways to get the sum 7 in the tree" << endl;
     cout << "the 2nd  neighbour of the node 3 is " << tree.Kth_Node(2, 3) << endl;
-    cout<<"the Maximum non-adjacent sum of the tree is "<<tree.Non_Adjacent_sum()<<endl;
+    cout << "the Maximum non-adjacent sum of the tree is " << tree.Non_Adjacent_sum() << endl;
+    int inorder[] = {4, 2, 5, 1, 6, 3, 7};
+    int preorder[] = {1, 2, 4, 5, 3, 6, 7};
+    int postorder[] = {4, 5, 2, 6, 7, 3, 1};
+    
+    Tree in_pre;
+    in_pre.BuildTree_from_inorder_preorder(inorder,preorder,7);
+    in_pre.LevelOrderDisplay();
     return EXIT_SUCCESS;
 }
 // 1
 // 2
-// 4
+// 4z
 // -1
 // -1
 // 5
