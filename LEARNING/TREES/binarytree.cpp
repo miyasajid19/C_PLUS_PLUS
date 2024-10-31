@@ -753,24 +753,28 @@ class Tree
 
         return temp;
     }
-    Node* buildTreeFromPrePost(int preorder[], int postorder[], int& preIndex, int postStart, int postEnd, int size) {
+    Node *buildTreeFromPrePost(int preorder[], int postorder[], int &preIndex, int postStart, int postEnd, int size)
+    {
         // Base case
-        if (preIndex >= size || postStart > postEnd) {
+        if (preIndex >= size || postStart > postEnd)
+        {
             return nullptr;
         }
 
         // Create the root node
-        Node* temp = new Node(preorder[preIndex++]);
+        Node *temp = new Node(preorder[preIndex++]);
 
         // If the subtree has only one node, return it
-        if (postStart == postEnd || preIndex >= size) {
+        if (postStart == postEnd || preIndex >= size)
+        {
             return temp;
         }
 
         // Find the index of the next element in the pre-order in the post-order array
         int nextVal = preorder[preIndex];
         int postIndex = postStart;
-        while (postIndex <= postEnd && postorder[postIndex] != nextVal) {
+        while (postIndex <= postEnd && postorder[postIndex] != nextVal)
+        {
             postIndex++;
         }
 
@@ -779,6 +783,82 @@ class Tree
         temp->right = buildTreeFromPrePost(preorder, postorder, preIndex, postIndex + 1, postEnd - 1, size);
 
         return temp;
+    }
+
+    Node *createParentMapping(Node *temp, int target, map<Node *, Node *> &NodeToParent)
+    {
+        Node *result = nullptr;
+        queue<Node *> Queue;
+        Queue.push(temp);
+        NodeToParent[temp] = nullptr;
+        while (!Queue.empty())
+        {
+            Node *frontNode = Queue.front();
+            Queue.pop();
+
+            if (frontNode->value == target)
+            {
+                result = frontNode;
+            }
+
+            if (frontNode->left)
+            {
+                NodeToParent[frontNode->left] = frontNode;
+                Queue.push(frontNode->left);
+            }
+
+            if (frontNode->right)
+            {
+                NodeToParent[frontNode->right] = frontNode;
+                Queue.push(frontNode->right);
+            }
+        }
+        return result;
+    }
+
+    int BurnTree(Node *temp, map<Node *, Node *> NodeToParent)
+    {
+        map<Node *, bool> hasBurnt;
+        queue<Node *> Queue;
+        Queue.push(temp);
+        hasBurnt[temp] = true;
+        int MinimumTime = 0;
+        while (!Queue.empty())
+        {
+            bool flag = false; // to check if nodes are added in this iteration
+            int size = Queue.size();
+            for (int i = 0; i < size; i++)
+            {
+                Node *frontNode = Queue.front();
+                Queue.pop();
+
+                if (frontNode->left && !hasBurnt[frontNode->left])
+                {
+                    flag = true;
+                    Queue.push(frontNode->left);
+                    hasBurnt[frontNode->left] = true;
+                }
+
+                if (frontNode->right && !hasBurnt[frontNode->right])
+                {
+                    flag = true;
+                    Queue.push(frontNode->right);
+                    hasBurnt[frontNode->right] = true;
+                }
+
+                if (NodeToParent[frontNode] && !hasBurnt[NodeToParent[frontNode]])
+                {
+                    flag = true;
+                    Queue.push(NodeToParent[frontNode]);
+                    hasBurnt[NodeToParent[frontNode]] = true;
+                }
+            }
+            if (flag)
+            {
+                MinimumTime++;
+            }
+        }
+        return MinimumTime;
     }
 
 public:
@@ -972,9 +1052,21 @@ public:
         int postIndex = size - 1; // Start from the end of postorder
         root = buildTreeFromInPost(inorder, postorder, postIndex, 0, size - 1, size);
     }
-    void buildTree_from_Preorder_Postorder(int preorder[], int postorder[], int size) {
-        int preIndex = 0;  // Start index for preorder traversal
+    void buildTree_from_Preorder_Postorder(int preorder[], int postorder[], int size)
+    {
+        int preIndex = 0; // Start index for preorder traversal
         root = buildTreeFromPrePost(preorder, postorder, preIndex, 0, size - 1, size);
+    }
+
+    int Burn_tree(int target)
+    {
+        map<Node *, Node *> NodeToParent;
+        Node *targetNode = createParentMapping(root, target, NodeToParent);
+        if (targetNode)
+        {
+            return BurnTree(targetNode, NodeToParent);
+        }
+        return -1; // If target node is not found
     }
 };
 
@@ -1054,14 +1146,18 @@ int main()
     in_pre.BuildTree_from_inorder_preorder(inorder, preorder, 7);
     in_pre.LevelOrderDisplay();
 
-
     Tree in_post;
-    in_post.buildTree_from_inorder_postorder(inorder,postorder,7);
+    in_post.buildTree_from_inorder_postorder(inorder, postorder, 7);
     in_post.LevelOrderDisplay();
 
     Tree pre_post;
-    pre_post.buildTree_from_Preorder_Postorder(preorder,postorder,7);
+    pre_post.buildTree_from_Preorder_Postorder(preorder, postorder, 7);
     pre_post.LevelOrderDisplay();
+
+    for (int i = 1; i < 8; i++)
+    {
+        cout << "The minium time to burn tree from " << i << " node is " << tree.Burn_tree(i) << endl;
+    }
     return EXIT_SUCCESS;
 }
 // 1
