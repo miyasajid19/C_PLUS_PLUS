@@ -1109,6 +1109,26 @@ public:
     {
         morrisTraversal(root);
     }
+    // Flattening function
+    void FlattenTree() {
+        Node *currentNode = root;
+        while (currentNode != nullptr) {
+            if (currentNode->left) {
+                // Find the rightmost node in the left subtree
+                Node *predecessor = currentNode->left;
+                while (predecessor->right) {
+                    predecessor = predecessor->right;
+                }
+
+                // Reconfigure links to flatten the tree
+                predecessor->right = currentNode->right;
+                currentNode->right = currentNode->left;
+                currentNode->left = nullptr;
+            }
+            // Move to the right in the flattened structure
+            currentNode = currentNode->right;
+        }
+    }
 };
 
 int main()
@@ -1199,8 +1219,11 @@ int main()
     {
         cout << "The minium time to burn tree from " << i << " node is " << tree.Burn_tree(i) << endl;
     }
-    cout<<"Morris Traversal ::: ";
+    cout << "Morris Traversal ::: ";
     tree.MorrisTraversal();
+
+    tree.FlattenTree();
+    tree.LevelOrderDisplay();
     return EXIT_SUCCESS;
 }
 // 1
