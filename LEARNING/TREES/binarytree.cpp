@@ -860,6 +860,42 @@ class Tree
         }
         return MinimumTime;
     }
+    void morrisTraversal(Node *temp)
+    {
+        Node *current = temp;
+
+        while (current != nullptr)
+        {
+            if (current->left == nullptr)
+            {
+                cout << current->value << " "; // Print the current node's value
+                current = current->right;      // Move to the right subtree
+            }
+            else
+            {
+                // Find the predecessor (rightmost node in the left subtree)
+                Node *predecessor = current->left;
+                while (predecessor->right != nullptr && predecessor->right != current)
+                {
+                    predecessor = predecessor->right;
+                }
+
+                // Create a temporary link to the current node
+                if (predecessor->right == nullptr)
+                {
+                    predecessor->right = current;
+                    current = current->left;
+                }
+                // Restore the tree structure
+                else
+                {
+                    predecessor->right = nullptr;
+                    cout << current->value << " "; // Print the current node's value
+                    current = current->right;
+                }
+            }
+        }
+    }
 
 public:
     Tree()
@@ -1068,6 +1104,11 @@ public:
         }
         return -1; // If target node is not found
     }
+
+    void MorrisTraversal()
+    {
+        morrisTraversal(root);
+    }
 };
 
 int main()
@@ -1158,6 +1199,8 @@ int main()
     {
         cout << "The minium time to burn tree from " << i << " node is " << tree.Burn_tree(i) << endl;
     }
+    cout<<"Morris Traversal ::: ";
+    tree.MorrisTraversal();
     return EXIT_SUCCESS;
 }
 // 1
