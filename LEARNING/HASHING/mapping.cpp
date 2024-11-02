@@ -34,5 +34,9 @@ int main()
     dir.addData("Hatake Kakashi", 432);
     dir.addData("Nohara Rin", 407432);
     dir.Display();
+    // we cannot store duplicate values in the map
+    dir.addData("Nohara Rin", 12345);//will just rewrite
+    cout << endl;
+    dir.Display();
     return EXIT_SUCCESS;
 }
