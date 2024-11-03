@@ -15,7 +15,7 @@ int main()
     directory.insert(make_pair("Uchiha Sasuke", 3));
     directory.insert(make_pair("Tsunade Senju", 4));
     directory.insert(make_pair("Namekaze Minato", 7));
-
+    // directory["Nohara Rin"]=1111;//not allowedno match for 'operator[]' (operand types are 'std::multimap<std::__cxx11::basic_string<char>, int>' and 'const char [11]')
     // Displaying the directory
     cout << "Original iteration:" << endl;
     for (multimap<string, int>::iterator it = directory.begin(); it != directory.end(); ++it)
