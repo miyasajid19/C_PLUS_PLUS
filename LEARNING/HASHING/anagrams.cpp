@@ -27,6 +27,34 @@ bool checkAnagrams(Solution s1, Solution s2)
     }
     return true;
 }
+
+class solution
+{
+    map<char, int> table;
+
+public:
+    solution(string str1, string str2)
+    {
+        for (char x : str1)
+        {
+            table[x]++;
+        }
+        for (char x : str2)
+        {
+            table[x]--;
+        }
+    }
+    bool checkAnagrams()
+    {
+        map<char, int>::iterator itr = table.begin();
+        for (auto x : table)
+        {
+            if (x.second != itr->second)
+                return false;
+        }
+        return true;
+    }
+};
 int main()
 {
     // #ifndef ONLINE_JUDGE
@@ -35,8 +63,10 @@ int main()
     // #endif
     Solution soln1("sajid");
     Solution soln2("dijas");
-    cout<<boolalpha;
+    cout << boolalpha;
     cout << checkAnagrams(soln1, soln2);
-
+    cout << endl;
+    solution soln("sajid", "dijas");
+    cout << soln.checkAnagrams();
     return EXIT_SUCCESS;
 }
