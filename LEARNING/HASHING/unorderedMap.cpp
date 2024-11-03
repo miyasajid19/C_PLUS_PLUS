@@ -11,6 +11,7 @@ int main()
     // #endif
     unordered_map<string, int> directory;
     directory.insert(make_pair("Uchiha Obito", 432));
+    directory.insert(make_pair("Uchiha Obito", 1234)); // if duplicate value is detected in the index then it simply igores rather update unlike ordered map
     directory["Nohara Rin"] = 407;
     directory["Hatake Kakashi"] = 407432;
     directory.insert(make_pair("Uzumaki Naruto", 1));
@@ -52,5 +53,31 @@ int main()
         cout << "Name : " << x.first << " Contact No. : " << x.second << endl;
     }
     cout << endl;
+
+    // lets find some values with index
+    itr = directory.find("Uchiha Obito");
+    if (itr != directory.end())
+    {
+        cout << "Found :: " << itr->second << endl;
+    }
+    cout << endl;
+    itr = directory.find("Huguya Hinata");
+    if (itr != directory.end())
+    {
+        cout << "Found" << itr->second << endl;
+    }
+    else
+    {
+        cout << "not Found" << endl
+             << endl;
+    }
+
+    // checking if value is present or not
+    cout << boolalpha;
+    bool x = directory.count("Hatake Kakashi");
+    cout << "Kakashi ??? " << x << endl;
+    x = directory.count("Uchiha Obito");
+    cout << "Obito ??? " << x << endl;
+
     return EXIT_SUCCESS;
-}
+} 
