@@ -18,7 +18,7 @@ int main() {
     directory.insert(make_pair("Uchiha Sasuke", 3));
     directory.insert(make_pair("Tsunade Senju", 4));
     directory.insert(make_pair("Namekaze Minato", 7));
-
+    // directory["Uzumaki Naruto"]=7;//not allowed
     // Displaying the directory (order is not guaranteed)
     cout << "Original iteration:" << endl;
     for (unordered_multimap<string, int>::iterator it = directory.begin(); it != directory.end(); ++it) {
