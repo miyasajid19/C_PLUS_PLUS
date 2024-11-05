@@ -1,9 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <queue>
-#include <stack>
-#include <vector>
-#include <map>
 using namespace std;
 
 class Node
@@ -47,24 +44,6 @@ class BST
         inOrderTraversal(temp->right);
     }
 
-    void preOrderTraversal(Node *temp)
-    {
-        if (temp == nullptr)
-            return;
-        cout << temp->value << "\t";
-        preOrderTraversal(temp->left);
-        preOrderTraversal(temp->right);
-    }
-
-    void postOrderTraversal(Node *temp)
-    {
-        if (temp == nullptr)
-            return;
-        postOrderTraversal(temp->left);
-        postOrderTraversal(temp->right);
-        cout << temp->value << "\t";
-    }
-
     void levelOrderTraversal(Node *temp)
     {
         if (temp == nullptr)
@@ -96,35 +75,6 @@ class BST
         }
     }
 
-    bool searchTree(Node *temp, int value)
-    {
-        if (temp == nullptr)
-            return false;
-
-        if (temp->value == value)
-            return true;
-
-        if (value < temp->value) // corrected direction for search
-            return searchTree(temp->left, value);
-        else
-            return searchTree(temp->right, value);
-    }
-
-    bool optimumSearch(Node *temp, int value)
-    {
-        while (temp != nullptr)
-        {
-            if (temp->value == value)
-                return true;
-
-            if (value < temp->value)
-                temp = temp->left;
-            else
-                temp = temp->right;
-        }
-        return false;
-    }
-
     Node *findMin(Node *temp)
     {
         while (temp->left != nullptr)
@@ -132,20 +82,26 @@ class BST
         return temp;
     }
 
-    Node *deleteNode(Node *temp, int value)
+    Node *findMax(Node *temp)
+    {
+        while (temp->right != nullptr)
+            temp = temp->right;
+        return temp;
+    }
+
+    Node *deleteNode(Node *temp, int value, bool replaceWithMaxFromLeft = false)
     {
         if (temp == nullptr)
             return temp;
 
         if (value < temp->value)
-            temp->left = deleteNode(temp->left, value);
+            temp->left = deleteNode(temp->left, value, replaceWithMaxFromLeft);
         else if (value > temp->value)
-            temp->right = deleteNode(temp->right, value);
+            temp->right = deleteNode(temp->right, value, replaceWithMaxFromLeft);
         else
         {
             // Node with only one child or no child
             if (temp->left == nullptr and temp->right == nullptr)
-
             {
                 delete temp;
                 return nullptr;
@@ -163,17 +119,18 @@ class BST
                 return rightchild;
             }
 
-            // Node with two children: Get the inorder successor
-            if (temp->right != nullptr and temp->left != nullptr)
+            // Node with two children: Replace with min from right or max from left based on flag
+            if (replaceWithMaxFromLeft)
+            {
+                Node *maxNode = findMax(temp->left);
+                temp->value = maxNode->value;
+                temp->left = deleteNode(temp->left, maxNode->value, replaceWithMaxFromLeft);
+            }
+            else
             {
                 Node *minNode = findMin(temp->right);
                 temp->value = minNode->value;
-                temp->right = deleteNode(temp->right, minNode->value);
-            }
-
-            if(temp->right and temp->left)
-            {
-                Node* maxNode=findMax)
+                temp->right = deleteNode(temp->right, minNode->value, replaceWithMaxFromLeft);
             }
         }
         return temp;
@@ -203,34 +160,14 @@ public:
         inOrderTraversal(root);
     }
 
-    void PreOrderTraversal()
-    {
-        preOrderTraversal(root);
-    }
-
-    void PostOrderTraversal()
-    {
-        postOrderTraversal(root);
-    }
-
     void LevelOrderDisplay()
     {
         levelOrderTraversal(root);
     }
 
-    bool SearchNode(int value)
+    void DeleteNode(int value, bool replaceWithMaxFromLeft = false)
     {
-        return searchTree(root, value);
-    }
-
-    bool OptimizedSearchNode(int value)
-    {
-        return optimumSearch(root, value);
-    }
-
-    void DeleteNode(int value)
-    {
-        root = deleteNode(root, value);
+        root = deleteNode(root, value, replaceWithMaxFromLeft);
     }
 };
 
@@ -247,23 +184,16 @@ int main()
     cout << "Inorder Traversal :: ";
     bst.InorderTraversal();
     cout << endl;
-    cout << "PreOrder Traversal :: ";
-    bst.PreOrderTraversal();
-    cout << endl;
-    cout << "PostOrder Traversal :: ";
-    bst.PostOrderTraversal();
-    cout << boolalpha;
-    cout << endl;
-    cout << "Search 10: " << bst.SearchNode(10) << endl;
-    cout << "Search 432: " << bst.SearchNode(432) << endl;
-    cout << endl;
-    cout << "Optimized Search 10: " << bst.OptimizedSearchNode(10) << endl;
-    cout << "Optimized Search 432: " << bst.OptimizedSearchNode(432) << endl;
-    cout << endl;
 
     // Delete node example
-    cout << "Deleting node 10..." << endl;
-    bst.DeleteNode(10);
+    cout << "Deleting node 10, replacing with max from left..." << endl;
+    bst.DeleteNode(10, true); // Replace with max from left
+    cout << "Level Order After Deletion:" << endl;
+    bst.LevelOrderDisplay();
+
+    cout << endl;
+    cout << "Deleting node 20, replacing with min from right..." << endl;
+    bst.DeleteNode(20, false); // Replace with min from right
     cout << "Level Order After Deletion:" << endl;
     bst.LevelOrderDisplay();
 
