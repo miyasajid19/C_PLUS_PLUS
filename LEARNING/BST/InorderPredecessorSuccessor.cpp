@@ -160,53 +160,62 @@ public:
 
         return make_pair(predecessor, successor);
     }
-    pair<int, int> SuccessorPredecessor(int k) {
-    Node* temp = root;
-    int predecessor = -1;
-    int successor = -1;
+    pair<int, int> SuccessorPredecessor(int k)
+    {
+        Node *temp = root;
+        int predecessor = -1;
+        int successor = -1;
 
-    // Traverse to locate the node `k` while updating predecessor and successor
-    while (temp != nullptr) {
-        if (temp->value == k) {
-            break; // Node with value `k` found
+        // Traverse to locate the node `k` while updating predecessor and successor
+        while (temp != nullptr)
+        {
+            if (temp->value == k)
+            {
+                break; // Node with value `k` found
+            }
+            else if (k < temp->value)
+            {
+                successor = temp->value; // Update successor as we move left
+                temp = temp->left;
+            }
+            else
+            {
+                predecessor = temp->value; // Update predecessor as we move right
+                temp = temp->right;
+            }
         }
-        else if (k < temp->value) {
-            successor = temp->value;  // Update successor as we move left
-            temp = temp->left;
+
+        // If `k` not found in the tree
+        if (temp == nullptr)
+        {
+            cout << "Element " << k << " not found in the BST." << endl;
+            return make_pair(-1, -1);
         }
-        else {
-            predecessor = temp->value;  // Update predecessor as we move right
-            temp = temp->right;
+
+        // Find predecessor (rightmost node in left subtree of `k`)
+        if (temp->left != nullptr)
+        {
+            Node *leftTree = temp->left;
+            while (leftTree->right != nullptr)
+            {
+                leftTree = leftTree->right;
+            }
+            predecessor = leftTree->value;
         }
+
+        // Find successor (leftmost node in right subtree of `k`)
+        if (temp->right != nullptr)
+        {
+            Node *rightTree = temp->right;
+            while (rightTree->left != nullptr)
+            {
+                rightTree = rightTree->left;
+            }
+            successor = rightTree->value;
+        }
+
+        return make_pair(predecessor, successor);
     }
-
-    // If `k` not found in the tree
-    if (temp == nullptr) {
-        cout << "Element " << k << " not found in the BST." << endl;
-        return make_pair(-1, -1);
-    }
-
-    // Find predecessor (rightmost node in left subtree of `k`)
-    if (temp->left != nullptr) {
-        Node* leftTree = temp->left;
-        while (leftTree->right != nullptr) {
-            leftTree = leftTree->right;
-        }
-        predecessor = leftTree->value;
-    }
-
-    // Find successor (leftmost node in right subtree of `k`)
-    if (temp->right != nullptr) {
-        Node* rightTree = temp->right;
-        while (rightTree->left != nullptr) {
-            rightTree = rightTree->left;
-        }
-        successor = rightTree->value;
-    }
-
-    return make_pair(predecessor, successor);
-}
-
 };
 
 int main()
