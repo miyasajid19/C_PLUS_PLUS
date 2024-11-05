@@ -85,6 +85,23 @@ class BST
         kth_smallest_intution1(temp->right, Queue);
     }
 
+    int kth_smallest(Node *temp, int &i, int k)
+    {
+        if (temp == nullptr)
+            return INT_MIN;
+
+        int left = kth_smallest(temp->left, i, k);
+        if (left != INT_MIN)
+        {
+            return left;
+        }
+        i++;
+        if (i == k)
+            return temp->value;
+
+        return kth_smallest(temp->right,i,k);
+    }
+
 public:
     BST()
     {
@@ -125,6 +142,11 @@ public:
 
         return Queue.front();
     }
+    int kth_smallest_Optimum(int k)
+    {
+        int i=0;
+        return kth_smallest(root,i,k);
+    }
 };
 
 int main()
@@ -144,5 +166,10 @@ int main()
     cout << "5th smallest element :::  " << bst.Kth_smallest(5) << endl;
     cout << "1st smallest element :::  " << bst.Kth_smallest(1) << endl;
     cout << "10th smallest element  :::  " << bst.Kth_smallest(10) << endl;
+ cout<<endl;
+    cout << "3rd smallest element :::  " << bst.kth_smallest_Optimum(3) << endl;
+    cout << "5th smallest element :::  " << bst.kth_smallest_Optimum(5) << endl;
+    cout << "1st smallest element :::  " << bst.kth_smallest_Optimum(1) << endl;
+    cout << "10th smallest element  :::  " << bst.kth_smallest_Optimum(10) << endl;
     return EXIT_SUCCESS;
 }
