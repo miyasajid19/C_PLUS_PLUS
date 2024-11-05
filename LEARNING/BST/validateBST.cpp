@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <stack>
 #include <queue>
 using namespace std;
 
@@ -83,6 +84,15 @@ class BST
         bool right = validate(temp->right, temp->value, maximum);
         return left and right;
     }
+    void validate_Intitution1(Node *temp, stack<int> &stk)
+    {
+        if (temp == nullptr)
+            return;
+
+        validate_Intitution1(temp->left, stk);
+        stk.push(temp->value);
+        validate_Intitution1(temp->right, stk);
+    }
 
 public:
     BST()
@@ -116,6 +126,22 @@ public:
     {
         return validate(root, INT_MIN, INT_MAX);
     }
+    bool validateTree1()
+    {
+        stack<int> stk;
+        validate_Intitution1(root, stk);
+        int previous = INT_MAX;
+        while (not stk.empty())
+        {
+            int top = stk.top();
+            if (top > previous)
+                return false;
+
+            stk.pop();
+            previous = top;
+        }
+        return true;
+    }
 };
 
 int main()
@@ -132,6 +158,7 @@ int main()
     bst.InorderTraversal();
     cout << endl;
     cout << boolalpha;
-    cout << "Is balanced?? " << bst.validateTree() << endl;
+    cout << "Is balanced? (using recursive method): " << bst.validateTree() << endl;
+    cout << "Is balanced? (using iterative method): " << bst.validateTree1() << endl;
     return EXIT_SUCCESS;
 }
