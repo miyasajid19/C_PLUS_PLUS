@@ -80,8 +80,9 @@ class BST
     void FillInorder(Node *temp, vector<int> &arr)
     {
         if (temp == nullptr)
+        {
             return;
-
+        }
         FillInorder(temp->left, arr);
         arr.push_back(temp->value);
         FillInorder(temp->right, arr);
@@ -116,26 +117,72 @@ public:
         levelOrderTraversal(root);
     }
 
-    void Flatten()
+    // Unoptimized Flatten: Using an auxiliary vector
+    void FlattenUnoptimized()
     {
         vector<int> arr;
-        FillInorder(root, arr);  // Fill arr with in-order traversal of the BST
+        FillInorder(root, arr);
+        Node *new_root = nullptr;
+        Node *current = nullptr;
 
-        // Start building the right-skewed "linked list" structure
-        Node *new_root = new Node(arr[0]);
-        Node *current = new_root;
-
-        for (size_t i = 1; i < arr.size(); i++)
+        for (int i = 0; i < arr.size(); i++)
         {
-            current->right = new Node(arr[i]);
+            if (i == 0)
+            {
+                new_root = new Node(arr[i]);
+                current = new_root;
+            }
+            else
+            {
+                current->right = new Node(arr[i]);
+                current = current->right;
+            }
+        }
+        arr.clear();
+        delete root;
+        root = new_root;
+    }
+
+    // Optimized Flatten: In-place modification of the tree
+    void FlattenOptimized()
+    {
+        if (!root) return; // Handle empty tree
+
+        Node *current = root;
+        Node *prev = nullptr;
+
+        stack<Node *> s;
+
+        while (current || !s.empty())
+        {
+            // Go to the leftmost node
+            while (current)
+            {
+                s.push(current);
+                current = current->left;
+            }
+
+            // Process the node
+            current = s.top();
+            s.pop();
+
+            // If there's a previous node, link it to the current
+            if (prev)
+            {
+                prev->right = current; // Link previous node's right to current
+                prev->left = nullptr;  // Ensure left is null
+            }
+
+            // Update the previous node to the current
+            prev = current;
+
+            // Move to the right node
             current = current->right;
         }
 
-        // Delete the original tree to prevent memory leaks
-        delete root;
-
-        // Update the root to point to the new flattened structure
-        root = new_root;
+        // The root is now the start of a right-skewed linked list
+        // Ensure the left pointer of the root is null
+        root->left = nullptr;
     }
 };
 
@@ -153,7 +200,23 @@ int main()
     bst.InorderTraversal();
     cout << endl;
 
-    bst.Flatten();
+    int choice;
+    cout << "Choose Flatten Method: (1) Unoptimized (2) Optimized: ";
+    cin >> choice;
+
+    if (choice == 1)
+    {
+        bst.FlattenUnoptimized();
+    }
+    else if (choice == 2)
+    {
+        bst.FlattenOptimized();
+    }
+    else
+    {
+        cout << "Invalid choice." << endl;
+        return EXIT_FAILURE;
+    }
 
     bst.LevelOrderDisplay();
     cout << endl;
