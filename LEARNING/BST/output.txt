@@ -1,0 +1,19 @@
+Enter Element 
+Enter Element :: 
+Enter Element :: 
+Enter Element :: 
+Enter Element :: 
+Enter Element :: 
+Enter Element :: 
+Enter Element :: 
+Enter Element :: 
+10	
+8	21	
+7	27	
+5	
+4	
+3	
+
+Inorder Traversal :: 3	4	5	7	8	10	21	27	
+Is balanced? (using recursive method): true
+Is balanced? (using iterative method): true
