@@ -1,62 +1,116 @@
 #include <iostream>
 #include <cstdlib>
+
 using namespace std;
-class heap
-{
+
+class Heap {
+private:
     int *arr;
     int size;
     int capacity;
 
 public:
-    heap(int capacity)
-    {
+    // Constructor to initialize heap with given capacity
+    Heap(int capacity) {
         this->capacity = capacity;
-        this->arr = new int[capacity];
-        this->size=0;
+        this->arr = new int[capacity + 1]; // +1 to make space for 1-based indexing
+        this->size = 0; // Initialize size to 0
     }
-    ~heap()
-    {
-        delete []arr;
+
+    // Destructor to free allocated memory
+    ~Heap() {
+        delete[] arr;
     }
-    void insert(int value)
-    {
-        this->size += 1;
-        int index = this->size;
+
+    // Insert a new value into the heap
+    void insert(int value) {
+        if (size >= capacity) {
+            cout << "Heap overflow. Cannot insert more elements." << endl;
+            return;
+        }
+
+        // Increment size and insert the element at the end of the heap
+        size++;
+        int index = size;
         arr[index] = value;
-        while (index > 1)
-        {
-            int parent = index / 2;
-            if (arr[parent] < arr[index])
-            {
-                swap(arr[parent], arr[index]);
-                index = parent;
-            }
-            else
-            {
-                return;
+
+        // Heapify upwards
+        while (index > 1) {
+            int parentIndex = index / 2;
+            if (arr[parentIndex] < arr[index]) {
+                swap(arr[parentIndex], arr[index]);
+                index = parentIndex;
+            } else {
+                break;
             }
         }
     }
-    void print()
-    {
-        for (int i = 1; i <= this->size; i++)
+
+    // Delete the root element (maximum element in a max heap)
+    void deleteRoot() {
+        if (size == 0) {
+            cout << "Heap is empty. No element to delete." << endl;
+            return;
+        }
+
+        // Replace root with the last element and reduce the heap size
+        arr[1] = arr[size];
+        size--;
+
+        // Heapify downwards
+        int index = 1;
+        while (index <= size) {
+            int leftIndex = 2 * index;
+            int rightIndex = 2 * index + 1;
+            int largestIndex = index;
+
+            // Compare with left child
+            if (leftIndex <= size && arr[leftIndex] > arr[largestIndex]) {
+                largestIndex = leftIndex;
+            }
+            // Compare with right child
+            if (rightIndex <= size && arr[rightIndex] > arr[largestIndex]) {
+                largestIndex = rightIndex;
+            }
+
+            // If the largest element is not at the current index, swap and continue heapifying
+            if (largestIndex != index) {
+                swap(arr[index], arr[largestIndex]);
+                index = largestIndex;
+            } else {
+                break;
+            }
+        }
+    }
+
+    // Print the elements of the heap
+    void print() const {
+        for (int i = 1; i <= size; i++) { // Start from index 1 for 1-based index
             cout << arr[i] << "\t";
+        }
         cout << endl;
     }
 };
-int main()
-{
-#ifndef ONLINE_JUDGE
+
+int main() {
+    #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
-#endif
-heap heap1(10);
-heap1.insert(50);
-heap1.insert(55);
-heap1.insert(53);
-heap1.insert(52);
-heap1.insert(54);
-heap1.print();
+    #endif
+
+    Heap heap(10);
+    heap.insert(50);
+    heap.insert(55);
+    heap.insert(53);
+    heap.insert(52);
+    heap.insert(54);
+
+    cout << "Heap after insertions: ";
+    heap.print();
+
+    heap.deleteRoot();
+    cout << "Heap after deleting root: ";
+    heap.print();
 
     return EXIT_SUCCESS;
 }
