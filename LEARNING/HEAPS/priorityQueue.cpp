@@ -36,7 +36,7 @@ int main()
     }
     cout << endl;
 
-    cout << "Min-Heap (Using Custom Comparator):" << endl;
+    cout << "Min-Heap :" << endl;
     // Printing elements in ascending order for min-heap (smallest first)
     while (!minHeap.empty())
     {
