@@ -3,24 +3,6 @@
 #include <vector>
 using namespace std;
 
-// Custom comparator for Min-Heap (smallest element has highest priority)
-struct MinHeapComparator
-{
-    bool operator()(int a, int b)
-    {
-        return a > b; // For min-heap, we want the smallest element at the top
-    }
-};
-
-// Custom comparator for Max-Heap (largest element has highest priority)
-struct MaxHeapComparator
-{
-    bool operator()(int a, int b)
-    {
-        return a < b; // For max-heap, we want the largest element at the top
-    }
-};
-
 int main()
 {
 
@@ -32,7 +14,7 @@ int main()
     priority_queue<int> maxHeap;
 
     // Priority queue for Min-Heap using custom comparator
-    priority_queue<int, vector<int>, MinHeapComparator> minHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
 
     // Adding some elements to both heaps
     maxHeap.push(10);
