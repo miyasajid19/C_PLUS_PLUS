@@ -1,6 +1,6 @@
 #include <iostream>
-#include <cstdlib>
 #include <vector>
+#include <queue>
 using namespace std;
 
 class Node
@@ -34,25 +34,57 @@ class BST
         return temp;
     }
 
-    void Display(Node *temp)
+    void inorderTraversal(Node *temp, vector<int> &inorderValues)
+    {
+        if (temp == nullptr)
+            return;
+        inorderTraversal(temp->left, inorderValues);
+        inorderValues.push_back(temp->value);
+        inorderTraversal(temp->right, inorderValues);
+    }
+
+    void fillTreePreorder(Node *temp, vector<int> &inorderValues, int &index)
     {
         if (temp == nullptr)
             return;
 
-        Display(temp->left);
-        cout << temp->value << '\t';
-        Display(temp->right);
+        // Assign the next value in sorted order to the current node
+        temp->value = inorderValues[index++];
+        
+        // Traverse left and right subtree in preorder fashion
+        fillTreePreorder(temp->left, inorderValues, index);
+        fillTreePreorder(temp->right, inorderValues, index);
     }
-
-    void inorder(Node* temp, vector<int>& Inorder)
+void levelOrderTraversal(Node *temp)
     {
         if (temp == nullptr)
             return;
-        inorder(temp->left, Inorder);
-        Inorder.push_back(temp->value);
-        inorder(temp->right, Inorder);
-    }
 
+        queue<Node *> q;
+        q.push(temp);
+        q.push(nullptr); // To mark the end of a level
+
+        while (!q.empty())
+        {
+            Node *temp1 = q.front();
+            q.pop();
+
+            if (temp1 == nullptr)
+            {
+                cout << endl;
+                if (!q.empty())
+                    q.push(nullptr);
+            }
+            else
+            {
+                cout << temp1->value << "\t";
+                if (temp1->left)
+                    q.push(temp1->left);
+                if (temp1->right)
+                    q.push(temp1->right);
+            }
+        }
+    }
 public:
     BST()
     {
@@ -64,90 +96,66 @@ public:
         root = add(root, value);
     }
 
-    void display()
+    void convertToMinHeap()
     {
-        Display(root);
+        vector<int> inorderValues;
+        inorderTraversal(root, inorderValues); // Get sorted values in inorder
+        int index = 0;
+        fillTreePreorder(root, inorderValues, index); // Fill tree in preorder with sorted values
+    }
+
+    void displayInorder()
+    {
+        vector<int> inorderValues;
+        inorderTraversal(root, inorderValues);
+        for (int value : inorderValues)
+            cout << value << '\t';
         cout << endl;
     }
 
-    void getInorder(vector<int>& Inorder)
+    void displayPreorder(Node *node)
     {
-        inorder(root, Inorder);
-    }
-};
-
-class Heap
-{
-    vector<int> arr;
-
-    void heapify(int size, int index)
-    {
-        int parentIndex = index;
-        int LeftIndex = 2 * index + 1;
-        int RightIndex = 2 * index + 2;
-
-        if (LeftIndex < size && arr[LeftIndex] > arr[parentIndex])
-            parentIndex = LeftIndex;
-        if (RightIndex < size && arr[RightIndex] > arr[parentIndex])
-            parentIndex = RightIndex;
-
-        if (parentIndex != index)
-        {
-            swap(arr[parentIndex], arr[index]);
-            heapify(size, parentIndex);
-        }
+        if (node == nullptr)
+            return;
+        cout << node->value << '\t';
+        displayPreorder(node->left);
+        displayPreorder(node->right);
     }
 
-public:
-    Heap() {}
-
-    // Constructor to create a heap from a vector of elements
-    Heap(vector<int> temp)
+    void displayPreorder()
     {
-        arr = temp;
-        for (int i = arr.size() / 2 - 1; i >= 0; i--)
-            heapify(arr.size(), i);
-    }
-
-    // Constructor to create a heap from a BST
-    Heap(BST bst)
-    {
-        vector<int> inorder;
-        bst.getInorder(inorder);
-
-        // Insert all elements from the inorder traversal into the heap array
-        arr = inorder;
-
-        // Build the heap
-        for (int i = arr.size() / 2 - 1; i >= 0; i--)
-            heapify(arr.size(), i);
-    }
-
-    void display()
-    {
-        for (int i = 0; i < arr.size(); i++)
-            cout << arr[i] << '\t';
+        displayPreorder(root);
         cout << endl;
+    }
+    void display_level()
+    {
+        levelOrderTraversal(root);
     }
 };
 
 int main()
 {
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
     BST bst;
-    bst.insert(1);
-    bst.insert(11);
-    bst.insert(10);
-    bst.insert(-1);
-    cout << "BST Inorder Display: ";
-    bst.display();
+    bst.insert(5);
 
-    Heap heap(bst);
-    cout << "Heap Display: ";
-    heap.display();
+    bst.insert(3);
+    bst.insert(8);
+    
+    bst.insert(2);
+    bst.insert(4);
+    bst.insert(7);
+    bst.insert(9);
+
+    cout << "BST Inorder before conversion (sorted): \n";
+    bst.display_level();
+
+    bst.convertToMinHeap();
+
+    cout << "BST Inorder after conversion to min-heap structure: \n";
+    bst.display_level();
+
+    cout << "BST Preorder after conversion to min-heap structure: \n";
+    bst.display_level();
 
     return EXIT_SUCCESS;
 }
