@@ -159,3 +159,4 @@ int main()
 
     return EXIT_SUCCESS;
 }
+//i don't know this solution is cent percent correct or not haha
