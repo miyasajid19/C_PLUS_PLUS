@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 class Heap
@@ -34,6 +35,21 @@ private:
             swap(arr[index], arr[largest]);
             heapify(largest); // Recursively heapify the affected subtree
         }
+    }
+    int Kth_largest_sum_Subarray(int temp[], int size, int k)
+    {
+        vector<int> sumArr;
+        for (int i = 0; i < size; i++)
+        {
+            int sum = 0;
+            for (int j = i; j < size; j++)
+            {
+                sum += arr[j];
+                sumArr.push_back(arr[j]);
+            }
+        }
+        sort(sumArr.begin(), sumArr.end());
+        return sumArr[sumArr.size() - k];
     }
 
 public:
@@ -127,17 +143,21 @@ public:
         }
         cout << endl;
     }
+    int Kth_Largest_Sum_Subarray(int k)
+    {
+        return Kth_largest_sum_Subarray(arr, size, k % size);
+    }
 };
 
 int main()
 {
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // freopen("output.txt", "w", stdout);
 #endif
 
     // Array for demonstration (1-based index)
-    int arr[6] = {-1, 50, 55, 53, 52, 54}; // -1 is a placeholder for 1-based indexing
+    int arr[6] = {-1, 50, 5534234, 53, 52, 54}; // -1 is a placeholder for 1-based indexing
     int arraySize = 5;
 
     // Initialize the heap using the array and automatically apply the max-heap property
@@ -155,6 +175,18 @@ int main()
     heap.deleteRoot();
     cout << "Heap after deleting root: ";
     heap.print();
+    heap.insert(10000);
 
+    cout << "The " << 0 << "th largest subarray sum is: " << heap.Kth_Largest_Sum_Subarray(0) << endl;
+    cout << "The " << 1 << "th largest subarray sum is: " << heap.Kth_Largest_Sum_Subarray(1) << endl;
+    cout << "The " << 2 << "th largest subarray sum is: " << heap.Kth_Largest_Sum_Subarray(2) << endl;
+    cout << "The " << 3 << "th largest subarray sum is: " << heap.Kth_Largest_Sum_Subarray(3) << endl;
     return EXIT_SUCCESS;
 }
+/*
+if you want to implement 0 based indexing then the heapify function will be as
+left=2*index+1;
+right=2*index+2;
+
+but the convenction is to use 1 based indexing
+*/
