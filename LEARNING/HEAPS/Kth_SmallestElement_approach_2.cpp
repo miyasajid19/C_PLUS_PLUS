@@ -11,7 +11,7 @@ INTUITION:
 3. After processing all elements, the top of the heap will be the k-th smallest element.
 */
 
-int findKthSmallest(int arr[], int start, int end, int k)
+int findKthSmallest(int arr[],int size, int k)
 {
     // Step 1: Create a max heap for the first k elements
     priority_queue<int> maxHeap;
@@ -21,7 +21,7 @@ int findKthSmallest(int arr[], int start, int end, int k)
     }
 
     // Step 2: Process remaining elements
-    for (int i = k; i <= end; i++)
+    for (int i = k; i <size; i++)
     {
         if (arr[i] < maxHeap.top())
         {
@@ -51,7 +51,7 @@ int main()
     cout << endl;
 
     cout << "The " << k << "-th smallest element in the array is: "
-         << findKthSmallest(arr, 0, size - 1, k) << endl;
+         << findKthSmallest(arr, size, k) << endl;
 
     return EXIT_SUCCESS;
 }
