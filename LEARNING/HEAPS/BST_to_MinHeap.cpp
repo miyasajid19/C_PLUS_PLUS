@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
-#include <queue>
 using namespace std;
 
 class Node
@@ -17,6 +16,7 @@ public:
         this->right = nullptr;
     }
 };
+
 class BST
 {
     Node *root;
@@ -33,6 +33,7 @@ class BST
 
         return temp;
     }
+
     void Display(Node *temp)
     {
         if (temp == nullptr)
@@ -42,39 +43,44 @@ class BST
         cout << temp->value << '\t';
         Display(temp->right);
     }
-void inorder(Node* temp, vector<int>& Inorder)
-{
-    if(temp==nullptr)
-        return;
-    inorder(temp->left,Inorder);
-    Inorder.push_back(temp->value);
-    inorder(temp->right,Inorder);
-}
+
+    void inorder(Node* temp, vector<int>& Inorder)
+    {
+        if (temp == nullptr)
+            return;
+        inorder(temp->left, Inorder);
+        Inorder.push_back(temp->value);
+        inorder(temp->right, Inorder);
+    }
+
 public:
     BST()
     {
         this->root = nullptr;
     }
+
     void insert(int value)
     {
         root = add(root, value);
     }
+
     void display()
     {
         Display(root);
-        cout<<endl;
+        cout << endl;
     }
+
     void getInorder(vector<int>& Inorder)
     {
-        inorder(root,Inorder);
+        inorder(root, Inorder);
     }
 };
+
 class Heap
 {
     vector<int> arr;
 
-    // Corrected heapify function with reference and index bounds
-    void heapify(vector<int> &arr, int size, int index)
+    void heapify(int size, int index)
     {
         int parentIndex = index;
         int LeftIndex = 2 * index + 1;
@@ -88,60 +94,35 @@ class Heap
         if (parentIndex != index)
         {
             swap(arr[parentIndex], arr[index]);
-            heapify(arr, size, parentIndex);
+            heapify(size, parentIndex);
         }
     }
 
 public:
     Heap() {}
 
-    void add(int value)
-    {
-        int index = arr.size();
-        arr.push_back(value);
-
-        while (index > 0)
-        {
-            int parentIndex = (index - 1) / 2;
-            if (arr[parentIndex] < arr[index])
-            {
-                swap(arr[parentIndex], arr[index]);
-                index = parentIndex;
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
     // Constructor to create a heap from a vector of elements
     Heap(vector<int> temp)
     {
         arr = temp;
         for (int i = arr.size() / 2 - 1; i >= 0; i--)
-            heapify(arr, arr.size(), i);
+            heapify(arr.size(), i);
     }
-    void fillpreorder(vector<int>&arr,vector<int>&inorder,int index)
-    {
-        if (inorder.empty())
-        {
-            return;
-        }
-        int front=inorder[index];
-        index++;
-        fillpreorder(arr,inorder,index);
-        arr.push_back(front);
-        fillpreorder(arr,inorder,index);
-        
-        
-    }
+
+    // Constructor to create a heap from a BST
     Heap(BST bst)
     {
-        vector<int>inorder;
+        vector<int> inorder;
         bst.getInorder(inorder);
 
+        // Insert all elements from the inorder traversal into the heap array
+        arr = inorder;
+
+        // Build the heap
+        for (int i = arr.size() / 2 - 1; i >= 0; i--)
+            heapify(arr.size(), i);
     }
+
     void display()
     {
         for (int i = 0; i < arr.size(); i++)
@@ -158,14 +139,15 @@ int main()
 #endif
     BST bst;
     bst.insert(1);
-    bst.display();
     bst.insert(11);
-    bst.display();
     bst.insert(10);
-    bst.display();
     bst.insert(-1);
+    cout << "BST Inorder Display: ";
     bst.display();
+
     Heap heap(bst);
+    cout << "Heap Display: ";
     heap.display();
+
     return EXIT_SUCCESS;
 }
