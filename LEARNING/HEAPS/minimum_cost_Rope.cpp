@@ -79,7 +79,7 @@ public:
             MinHeap.pop();
             int b = MinHeap.top();
             MinHeap.pop();
-            MinHeap.push(a + b);
+            MinHeap.push(a + b);//joining two pieces
         }
         return 0;
     }
@@ -91,9 +91,9 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 #endif
-    vector<int>cost={1,13,4,8,62,61};
+    vector<int>cost={1,13,4,8,62,61};//cost of each minimum  pieces of  the rope
     Heap heap(cost);
     heap.display();
-    cout<<"The minimum cost of the rope is "<<heap.FindCost();
+    cout<<"The minimum cost of the rope is "<<heap.FindCost();//the final price of rope after joing all pieces
     return EXIT_SUCCESS;
 }
