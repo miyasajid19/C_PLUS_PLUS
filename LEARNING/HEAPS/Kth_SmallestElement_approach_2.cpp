@@ -41,7 +41,7 @@ int main()
 
     int arr[] = {432, 407, 420, 433, 434, 436};
     int size = sizeof(arr) / sizeof(arr[0]);
-    int k = 3; // Example: Finding the 3rd smallest element
+    int k = 3;
 
     cout << "Unsorted Array: ";
     for (int i = 0; i < size; i++)
@@ -50,8 +50,7 @@ int main()
     }
     cout << endl;
 
-    // Call the findKthSmallest function with correct parameters
-    cout << "The " << k << "-th smallest element in the array is: " 
+    cout << "The " << k << "-th smallest element in the array is: "
          << findKthSmallest(arr, 0, size - 1, k) << endl;
 
     return EXIT_SUCCESS;
