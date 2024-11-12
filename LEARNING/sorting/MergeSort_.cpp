@@ -38,9 +38,9 @@ void Mergesort(vector<int> &arr, int start, int end)
     if (start >= end)
         return;
     int middle = (start + end) / 2;
-    Mergesort(arr, start, middle);
-    Mergesort(arr, middle + 1, end);
-    MergeArr(arr, start, middle, end);
+    Mergesort(arr, start, middle);     // sort the left part
+    Mergesort(arr, middle + 1, end);   // solve right part
+    MergeArr(arr, start, middle, end); // merge two sorted array
 }
 int main()
 {
