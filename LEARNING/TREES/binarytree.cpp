@@ -354,7 +354,7 @@ class Tree
         {
             Traverse_Left(temp->left, ans);
         }
-        if (temp->right)
+        else
         {
             Traverse_Left(temp->right, ans);
         }
@@ -1110,13 +1110,17 @@ public:
         morrisTraversal(root);
     }
     // Flattening function
-    void FlattenTree() {
+    void FlattenTree()
+    {
         Node *currentNode = root;
-        while (currentNode != nullptr) {
-            if (currentNode->left) {
+        while (currentNode != nullptr)
+        {
+            if (currentNode->left)
+            {
                 // Find the rightmost node in the left subtree
                 Node *predecessor = currentNode->left;
-                while (predecessor->right) {
+                while (predecessor->right)
+                {
                     predecessor = predecessor->right;
                 }
 
@@ -1135,7 +1139,7 @@ int main()
 {
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // freopen("output.txt", "w", stdout);
 #endif
     cout << boolalpha;
     Tree tree;
