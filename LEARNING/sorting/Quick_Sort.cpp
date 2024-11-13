@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-int partition(vector<int>& arr, int start, int end)
+int partition(vector<int> &arr, int start, int end)
 {
     int PivotElement = arr[start];
     int count = 0;
@@ -13,11 +13,10 @@ int partition(vector<int>& arr, int start, int end)
 
     int PivotIndex = start + count;
     swap(arr[start], arr[PivotIndex]);
-
     int i = start, j = end;
     while (i < PivotIndex && j > PivotIndex)
     {
-        while (arr[i] <= PivotElement)
+        while (arr[i] < PivotElement)
             i++;
 
         while (arr[j] > PivotElement)
@@ -29,13 +28,13 @@ int partition(vector<int>& arr, int start, int end)
     return PivotIndex;
 }
 
-void QuickSort(vector<int>& arr, int start, int end)
+void QuickSort(vector<int> &arr, int start, int end)
 {
     if (start >= end)
         return;
-    int pi = partition(arr, start, end);
-    QuickSort(arr, start, pi - 1);
-    QuickSort(arr, pi + 1, end);
+    int PivotIndex = partition(arr, start, end);
+    QuickSort(arr, start, PivotIndex - 1);
+    QuickSort(arr, PivotIndex + 1, end);
 }
 
 int main()
@@ -44,14 +43,16 @@ int main()
     cout << "Unsorted ::  " << endl;
     for (auto x : arr)
         cout << x << " ";
-    cout << endl << endl;
+    cout << endl
+         << endl;
 
     QuickSort(arr, 0, arr.size() - 1);
 
     cout << "Sorted" << endl;
     for (auto x : arr)
         cout << x << " ";
-    cout << endl << endl;
+    cout << endl
+         << endl;
 
     return EXIT_SUCCESS;
 }
