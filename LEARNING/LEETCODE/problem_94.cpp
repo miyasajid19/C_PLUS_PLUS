@@ -10,36 +10,39 @@
  * };
  */
 
-//approach 1
-class Solution {
+// approach 1
+class Solution
+{
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector <int> ans;
-        inorder(root,ans);
-        return ans;
-        
-    }
-    void inorder(TreeNode* temp,vector<int>&arr)
+    vector<int> inorderTraversal(TreeNode *root)
     {
-        if(temp==nullptr)
+        vector<int> ans;
+        inorder(root, ans);
+        return ans;
+    }
+    void inorder(TreeNode *temp, vector<int> &arr)
+    {
+        if (temp == nullptr)
             return;
-        inorder(temp->left,arr);
+        inorder(temp->left, arr);
         arr.push_back(temp->val);
-        inorder(temp->right,arr);
+        inorder(temp->right, arr);
     }
 };
 
+// approach 2
 
-//approach 2
-
-class Solution {
+class Solution
+{
 public:
-vector<int>ans;
-    vector<int> inorderTraversal(TreeNode* root) {
-        if(root==nullptr)
-        return {};
+    vector<int> ans;
+    vector<int> inorderTraversal(TreeNode *root)
+    {
+        if (root == nullptr)
+            return {};
         inorderTraversal(root->left);
         ans.push_back(root->val);
         inorderTraversal(root->right);
         return ans;
     }
+}
