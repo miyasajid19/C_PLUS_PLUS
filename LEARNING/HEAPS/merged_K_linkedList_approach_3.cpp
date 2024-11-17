@@ -69,47 +69,33 @@ public:
     {
         priority_queue<Node *, vector<Node *>, Solution> minHeap;
         int size = arr.size();
-
         if (size == 0)
             return LinkedList();
-
-        // Push all heads to the priority queue
         for (int i = 0; i < size; i++)
         {
             if (arr[i] != nullptr)
-            {
                 minHeap.push(arr[i]);
-            }
         }
-
         Node *head = nullptr;
         Node *tail = nullptr;
-
-        // While the priority queue is not empty
-        while (!minHeap.empty())
+        while (not minHeap.empty())
         {
             Node *temp = minHeap.top();
             minHeap.pop();
-
-            // If the next node exists, push it into the heap
             if (temp->next != nullptr)
             {
                 minHeap.push(temp->next);
             }
-
-            // If this is the first node, set head and tail
             if (head == nullptr)
             {
                 head = tail = temp;
             }
             else
             {
-                // Attach the node to the merged list
                 tail->next = temp;
                 tail = tail->next;
             }
         }
-
         LinkedList ll;
         ll.head = head;
         return ll;
