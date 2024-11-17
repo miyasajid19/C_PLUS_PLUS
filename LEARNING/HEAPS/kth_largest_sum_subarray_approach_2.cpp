@@ -13,8 +13,8 @@ public:
     int KthLargestSum(vector<int> arr, int k)
     {
         // Clear the priority queue each time the function is called
-        sumstore = priority_queue<int, vector<int>, greater<int>>();
-
+        sumstore = priority_queue<int, vector<int>, greater<int>>();//this was the cause for giving error in testing
+        
         for (int i = 0; i < arr.size(); i++)
         {
             int sum = 0;
