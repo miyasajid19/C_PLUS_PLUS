@@ -143,3 +143,4 @@ int main()
 
     return EXIT_SUCCESS;
 }
+// this does is creates the new linked list and with the data of linked list
