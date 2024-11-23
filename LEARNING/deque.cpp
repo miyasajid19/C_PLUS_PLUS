@@ -103,7 +103,7 @@ int main()
 }
 /*
 
-Feature	            std::vector	                                std::list (DLL)	            std::deque
+Feature	            vector	                                list (DLL)	            deque
 Implementation	    Dynamic array	                            Doubly linked list	        Dynamic array of blocks
 Insertion/Deletion	Inefficient in the middle	                Efficient at any position	Efficient at front and back
 Access	            Fast random access	                        Sequential only (slow)	    Fast random access
