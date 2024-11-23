@@ -1,5 +1,5 @@
 #include <iostream>
-#include <utility> // For std::pair
+#include <utility> // For pair but not necessary
 #include <vector>
 using namespace std;
 
@@ -50,5 +50,16 @@ int main() {
     cout << "After swapping: p2 = (" << p2.first << ", " << p2.second 
          << "), p3 = (" << p3.first << ", " << p3.second << ")" << endl;
 
+    vector<pair<int, string>> students;
+
+    // Adding students
+    students.push_back({13, "Obito Uchiha"});
+    students.emplace_back(11, "Rin Nohara");
+    students.push_back({12, "Kakashi Hatake"});
+    //students.push_back(12, "Kakashi Hatake")//not allowed
+
+    // Traversing and printing the students
+    for (auto x : students)
+        cout << x.first << " -------> " << x.second << endl;
     return 0;
 }
