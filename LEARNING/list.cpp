@@ -59,8 +59,8 @@ int main() {
     cout << endl;
 
     // 7. Filling list with the same value
-    list5.assign(7, 42); // Assign 7 elements with value 42
-    cout << "After filling list5 with 42: ";
+    list5.assign(7, 432); // Assign 7 elements with value 432
+    cout << "After filling list5 with 432: ";
     for (int x : list5) cout << x << " ";
     cout << endl;
 
