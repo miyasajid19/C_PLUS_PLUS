@@ -3,17 +3,20 @@
 #include <stdexcept> // For runtime_error
 using namespace std;
 
-class DivisionByZeroError : public runtime_error {
+class DivisionByZeroError : public runtime_error
+{
 public:
     DivisionByZeroError() : runtime_error("Division by zero error: denominator is zero.") {}
 };
 
-class IndeterminantError : public runtime_error {
+class IndeterminantError : public runtime_error
+{
 public:
     IndeterminantError() : runtime_error("Indeterminant error: both numerator and denominator are zero.") {}
 };
 
-class Divide {
+class Divide
+{
 private:
     int a, b;
 
@@ -23,7 +26,8 @@ public:
     Divide(int a, int b) : a(a), b(b) {}
     ~Divide() {}
 
-    int result() {
+    int result()
+    {
         if (a == 0 && b == 0)
             throw IndeterminantError();
         if (b == 0)
@@ -32,44 +36,63 @@ public:
     }
 };
 
-int main() {
+int main()
+{
     Divide a;
     Divide b(407);
     Divide c(432, 407);
 
     // First operation
-    try {
+    try
+    {
         cout << a.result() << endl;
-    } catch (const runtime_error& e) {
+    }
+    catch (const runtime_error &e)
+    {
         cerr << e.what() << endl;
     }
 
     // Second operation
-    try {
+    try
+    {
         cout << b.result() << endl;
-    } catch (const runtime_error& e) {
+    }
+    catch (const runtime_error &e)
+    {
         cerr << e.what() << endl;
     }
 
     // Third operation
-    try {
+    try
+    {
         cout << c.result() << endl;
-    } catch (const runtime_error& e) {
+    }
+    catch (const runtime_error &e)
+    {
         cerr << e.what() << endl;
     }
 
     // Combined operations
-    try {
+    try
+    {
         cout << c.result() << endl; // This will succeed
         cout << b.result() << endl; // This will throw
         cout << a.result() << endl; // Won't execute
-    } catch (const DivisionByZeroError& e) {
+    }
+    catch (const DivisionByZeroError &e)
+    {
         cerr << "DivisionByZeroError: " << e.what() << endl;
-    } catch (const IndeterminantError& e) {
+    }
+    catch (const IndeterminantError &e)
+    {
         cerr << "IndeterminantError: " << e.what() << endl;
-    } catch (const char* e) {
+    }
+    catch (const char *e)
+    {
         cerr << "Char Pointer Exception: " << e << endl;
-    } catch (...) {
+    }
+    catch (...)
+    {
         cerr << "Unexpected error occurred!" << endl;
     }
 
